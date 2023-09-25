@@ -10,8 +10,8 @@ export default function BuilderPanel() {
     const addBackgroundLayer = useGradientStore((state) => state.addBackgroundLayer);
 
     const renderBackgroundInputs = (items: BackgroundInput[]) => {
-        return items.map((item, index) => {
-            return <CodeInput key={item.id} index={index} />
+        return items.map(item => {
+            return <CodeInput key={item.id} id={item.id} />
         });
     };
 

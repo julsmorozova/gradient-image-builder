@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 export type BackgroundInput = { 
-    id: number;
+    id: string;
     value: string;
 }
 
@@ -13,9 +13,10 @@ export type GradientObjectState = {
 }
 
 type GradientObjectAction = {
-    editGradientObjectValue: (incomingState: Partial<GradientObjectState>) => void, // expected to be more gradient properties for ediitng
+    editGradientObjectValue: (incomingState: Partial<GradientObjectState>) => void,
     editBackgroundValue: (incomingState: BackgroundInput) => void,
     addBackgroundLayer: () => void,
+    deleteBackgroundLayer: (id: BackgroundInput['id']) => void,
     editCheckboxValue: () => void,
 }
 
@@ -26,9 +27,10 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     height: 20,
     isBorderShown: true,
     borderWidth: 1,
-    backgroundInputs: [{id: 0, value: gradientDefaultValue}],
+    backgroundInputs: [{id: new Date().valueOf().toString(), value: gradientDefaultValue}],
     editGradientObjectValue: (incomingState) => set((state) => ({ ...state, ...incomingState })),
     editBackgroundValue: (incomingState) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.map(i => {
+        console.log('edit action id', i.id);
         if (i.id === incomingState.id) {
             return { ...incomingState, value: incomingState.value }
         }
@@ -36,6 +38,7 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
             return i
         }
     })})),
-    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: state.backgroundInputs.length, value: gradientDefaultValue }]})),
+    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), value: gradientDefaultValue }]})),
+    deleteBackgroundLayer: (id) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.filter(item => item.id !== id)})),
     editCheckboxValue: () => { set((state) => ({ ...state, isBorderShown: !state.isBorderShown }))},
 }))
