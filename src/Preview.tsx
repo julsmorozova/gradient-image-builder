@@ -1,10 +1,11 @@
 import { Fragment } from 'react';
 import { useGradientStore } from './store';
 import './Preview.css';
-import { styleObjectToString } from './tools';
+import { styleObjectToString, concatBackgroundValues } from './tools';
 
 export default function Preview() {
-    const backgroundValue = useGradientStore((state) => state.backgroundInput);
+    const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
+    const backgroundEditedValue = concatBackgroundValues(backgroundInputs);
     const width = useGradientStore((state) => state.width);
     const height = useGradientStore((state) => state.height);
     const isBorderShown = useGradientStore((state) => state.isBorderShown);
@@ -14,7 +15,7 @@ export default function Preview() {
         width: width + 'rem',
         height: height + 'rem',
         border: isBorderShown ? borderWidth + 'px solid #777' : 'none',
-        backgroundImage: backgroundValue,
+        backgroundImage: backgroundEditedValue,
         backgroundRepeat: 'no-repeat',
     };
 

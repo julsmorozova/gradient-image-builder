@@ -1,36 +1,24 @@
-import { useGradientStore } from './store';
+import { BackgroundInput, useGradientStore } from './store';
 import CodeInput from "./CodeInput";
+import "./BuilderPanel.css";
+import NumberInput from './NumberInput';
 
 export default function BuilderPanel() {
-    const width = useGradientStore((state) => state.width);
-    const height = useGradientStore((state) => state.height);
+    const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
     const isBorderShown = useGradientStore((state) => state.isBorderShown);
-    const borderWidth = useGradientStore((state) => state.borderWidth);
-    const editValue = useGradientStore((state) => state.editGradientObjectValue);
     const editCheckboxValue = useGradientStore((state) => state.editCheckboxValue);
+    const addBackgroundLayer = useGradientStore((state) => state.addBackgroundLayer);
+
+    const renderBackgroundInputs = (items: BackgroundInput[]) => {
+        return items.map((item, index) => {
+            return <CodeInput key={item.id} index={index} />
+        });
+    };
 
     return (
         <div className="panel-container">
-            <div className="container">
-                <div className="label">width: </div>
-                <input 
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
-                    onChange={(e) => editValue({ width: Number(e.currentTarget.value) })}
-                    value={width} 
-                /> rem
-            </div>
-            <div className="container">
-                <div className="label">height: </div>
-                <input 
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
-                    onChange={(e) => editValue({ height: Number(e.currentTarget.value)})}
-                    value={height} 
-                /> rem
-            </div>
+            <NumberInput inputName="width" unit="rem" />
+            <NumberInput inputName="height" unit="rem" />
             <div className="container">
                 <div className="label">border visible: </div>
                 <input 
@@ -42,18 +30,14 @@ export default function BuilderPanel() {
                     checked={!!isBorderShown} 
                 />
             </div>
-            <div className="container">
-                <div className="label">border width: </div>
-                <input 
-                    disabled={!isBorderShown}
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
-                    onChange={(e) => editValue({ borderWidth: Number(e.currentTarget.value)})}
-                    value={borderWidth} 
-                />  px
-            </div>
-            <CodeInput />
+            <NumberInput inputName="borderWidth" unit="px" />
+            {renderBackgroundInputs(backgroundInputs)}
+            <button 
+                id="add-bg-layer-btn" 
+                onClick={addBackgroundLayer}
+            >
+                +
+            </button>
         </div>
     );
 }

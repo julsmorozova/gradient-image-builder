@@ -1,9 +1,14 @@
 import './CodeInput.css';
 import { useGradientStore } from './store';
 
-export default function CodeInput() {
-    const backgroundValue = useGradientStore((state) => state.backgroundInput);
-    const editBackgroundValue = useGradientStore((state) => state.editGradientObjectValue)
+type CodeInputProps = {
+    index: number;
+}
+
+export default function CodeInput(props: CodeInputProps) {
+    const index = props.index;
+    const backgroundValue = useGradientStore((state) => state.backgroundInputs[index].value);
+    const editBackgroundValue = useGradientStore((state) => state.editBackgroundValue)
     return (
         <div className="container">
             <div className="label">background: </div>
@@ -11,7 +16,7 @@ export default function CodeInput() {
                 data-gramm="false" 
                 data-gramm_editor="false" 
                 data-enable-grammarly="false" 
-                onChange={(e) => editBackgroundValue({backgroundInput: e.currentTarget.value})}
+                onChange={(e) => editBackgroundValue({id: index, value : e.currentTarget.value})}
                 value={backgroundValue} 
             />
         </div>

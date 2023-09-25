@@ -1,0 +1,11 @@
+#add-bg-layer-btn {
+    width: 2rem;
+    height: 1rem;
+    background-color: #eee;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: rgb(119, 119, 119);
+}
