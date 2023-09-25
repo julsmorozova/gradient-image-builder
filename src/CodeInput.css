@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: start;
+    justify-content: space-between;
+    width: 96%;
+    height: fit-content;
+    border: 1px solid #ccc;
+}
+
+.label {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 25%;
+    margin-right: 0.5rem;
+}
+
+textarea {
+    width: 75%;
+    min-height: 5rem;
+}

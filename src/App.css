@@ -1,0 +1,39 @@
+#root {
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100vh;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  font-size: 2rem;
+  border-bottom: 1px solid #ccc;
+}
+
+main {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 40%;
+  padding: 1rem;
+}
+
+.panel-container:has(.preview-container) {
+  flex: 0 1 60%;
+}
+
+.panel-container:first-of-type {
+  border-right: 1px solid #ccc;
+}
