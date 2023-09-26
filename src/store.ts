@@ -13,6 +13,7 @@ export type GradientObjectState = {
 }
 
 type GradientObjectAction = {
+    updateBackgroundInputs: (incomingState: BackgroundInput[]) => void,
     editGradientObjectValue: (incomingState: Partial<GradientObjectState>) => void,
     editBackgroundValue: (incomingState: BackgroundInput) => void,
     addBackgroundLayer: () => void,
@@ -21,18 +22,19 @@ type GradientObjectAction = {
 }
 
 const gradientDefaultValue = "linear-gradient(#76ecd4, #fff)";
+const gradientDefaultValue1 = "radial-gradient(20% 20% at 35% 50.5%, #000 49.5%, transparent 50%)";
 
 export const useGradientStore = create<GradientObjectState & GradientObjectAction>((set) => ({
     width: 20,
     height: 20,
     isBorderShown: true,
     borderWidth: 1,
-    backgroundInputs: [{id: new Date().valueOf().toString(), value: gradientDefaultValue}],
+    backgroundInputs: [{id: new Date().valueOf().toString(), value: gradientDefaultValue1}],
+    updateBackgroundInputs: (incomingState) => set((state) => ({ ...state, backgroundInputs: [...incomingState] })),
     editGradientObjectValue: (incomingState) => set((state) => ({ ...state, ...incomingState })),
     editBackgroundValue: (incomingState) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.map(i => {
-        console.log('edit action id', i.id);
         if (i.id === incomingState.id) {
-            return { ...incomingState, value: incomingState.value }
+            return { ...i, value: incomingState.value }
         }
         else {
             return i

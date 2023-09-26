@@ -1,18 +1,52 @@
 import { BackgroundInput, useGradientStore } from './store';
 import CodeInput from "./CodeInput";
+import NumberInput from './NumberInput';
+import { useRef } from 'react';
 import "./BuilderPanel.css";
 import "./NumberInput.css";
-import NumberInput from './NumberInput';
 
 export default function BuilderPanel() {
     const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
     const isBorderShown = useGradientStore((state) => state.isBorderShown);
     const editCheckboxValue = useGradientStore((state) => state.editCheckboxValue);
     const addBackgroundLayer = useGradientStore((state) => state.addBackgroundLayer);
+    const updateBackgroundInputs = useGradientStore((state) => state.updateBackgroundInputs);
+
+    const dragItem = useRef<any>(null);
+    const dragOverItem = useRef<any>(null);
+
+    const dragStart = (index: number) => {
+        dragItem.current = index;
+    };
+
+    const dragEnter = (index: number) => {
+        dragOverItem.current = index;
+    };
+
+    const handleSort = () => {
+        const copiedBackgrounds = [...backgroundInputs];
+        const dragItemContent = copiedBackgrounds.splice(dragItem.current, 1)[0];
+        copiedBackgrounds.splice(dragOverItem.current, 0, dragItemContent);
+        dragItem.current = null;
+        dragOverItem.current = null;
+        console.log("copiedBackgrounds: ", copiedBackgrounds); // TODO remove
+        updateBackgroundInputs(copiedBackgrounds);
+    };
 
     const renderBackgroundInputs = (items: BackgroundInput[]) => {
-        return items.map(item => {
-            return <CodeInput key={item.id} id={item.id} />
+        return items.map((item, index) => {
+            return (
+                <div 
+                    key={index} 
+                    draggable 
+                    onDragStart={() => dragStart(index)}
+                    onDragEnter={() => dragEnter(index)}
+                    onDragEnd={handleSort}
+                    onDragOver={(e) => e.preventDefault()}
+                >
+                    <CodeInput key={item.id} id={item.id} />
+                </div>
+            );
         });
     };
 
