@@ -14,7 +14,7 @@ export default function Preview() {
     const styleBlock = {
         width: width + 'rem',
         height: height + 'rem',
-        border: isBorderShown ? borderWidth + 'px solid #777' : 'none',
+        border: isBorderShown ? borderWidth + 'px solid #b1b1b1' : 'none',
         backgroundImage: backgroundEditedValue,
         backgroundRepeat: 'no-repeat',
     };

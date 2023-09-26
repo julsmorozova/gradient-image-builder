@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import BuilderPanel from './BuilderPanel';
 import OutcomePanel from './OutcomePanel';
 import './App.css'
@@ -7,7 +6,11 @@ export default function App() {
 
   return (
     <>
-      <header>Gradient Builder</header>
+      <header>
+        <div className="text-block-wrapper">
+          <div className="text-block">Gradient Builder</div>
+        </div>
+      </header>
       <main>
         <BuilderPanel />
         <OutcomePanel />

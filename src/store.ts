@@ -20,7 +20,7 @@ type GradientObjectAction = {
     editCheckboxValue: () => void,
 }
 
-const gradientDefaultValue = "linear-gradient(#000, #fff)";
+const gradientDefaultValue = "linear-gradient(#76ecd4, #fff)";
 
 export const useGradientStore = create<GradientObjectState & GradientObjectAction>((set) => ({
     width: 20,

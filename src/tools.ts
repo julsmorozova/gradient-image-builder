@@ -8,3 +8,7 @@ export const styleObjectToString = (styleObject: CSSProperties) => {
 export const concatBackgroundValues = (backgroundsArray: BackgroundInput[]) => {
     return backgroundsArray.map(item => item.value).toString();
 };
+
+export const editDisplayStylePropName = (name: string) => {
+    return name.replace(/[A-Z]/g, match => ` ${match.toLowerCase()}`);
+}

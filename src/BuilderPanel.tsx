@@ -1,6 +1,7 @@
 import { BackgroundInput, useGradientStore } from './store';
 import CodeInput from "./CodeInput";
 import "./BuilderPanel.css";
+import "./NumberInput.css";
 import NumberInput from './NumberInput';
 
 export default function BuilderPanel() {
@@ -17,10 +18,10 @@ export default function BuilderPanel() {
 
     return (
         <div className="panel-container">
-            <NumberInput inputName="width" unit="rem" />
-            <NumberInput inputName="height" unit="rem" />
-            <div className="container">
-                <div className="label">border visible: </div>
+            <NumberInput key="number-input-width" inputName="width" unit="rem" />
+            <NumberInput key="number-input-height" inputName="height" unit="rem" />
+            <div className="number-input-container">
+                <div className="number-input-label">border visible: </div>
                 <input 
                     type="checkbox"
                     data-gramm="false" 
@@ -30,13 +31,13 @@ export default function BuilderPanel() {
                     checked={!!isBorderShown} 
                 />
             </div>
-            <NumberInput inputName="borderWidth" unit="px" />
+            <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" />
             {renderBackgroundInputs(backgroundInputs)}
             <button 
-                id="add-bg-layer-btn" 
+                className="btn btn-primary add-bg-layer-btn"
                 onClick={addBackgroundLayer}
             >
-                +
+                add layer
             </button>
         </div>
     );
