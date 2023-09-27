@@ -1,0 +1,51 @@
+.accordion-header {
+    display: flex;
+    width: 100%;
+}
+
+.accordion-body.collapsed {
+    display: none;
+}
+
+.btn.btn-secondary.accordion-btn {
+    padding: 0.25rem 0.25rem;
+}
+
+span.arrow-btn {
+    all: unset;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1rem;
+    height: 1rem;
+    border: 0;
+    border-radius: 0.125rem;
+    display: grid;
+    place-content: center;
+  }
+  
+  span.arrow-btn.down::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    transform: scale(1);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 0.875rem 0.875rem var(--btn-primary-bg-color);
+    clip-path: polygon(-30% 0%, -50% -5%, 50% 100%, 150% -5%, 130% 0%, 50% 85%);
+    /* Windows high contrast mode */
+    background-color: CanvasText; 
+  }
+
+  span.arrow-btn.up::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    transform: scale(1);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 0.875rem 0.875rem var(--btn-primary-bg-color);
+    clip-path: polygon(-50% 95%, -30% 100%, 50% 15%, 130% 100%, 150% 95%, 50% 0%);
+    /* Windows high contrast mode */
+    background-color: CanvasText; 
+  }

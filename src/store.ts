@@ -1,8 +1,19 @@
 import { create } from 'zustand';
 
+// type BackgroundBlock = {
+//     id: string;
+//     isAccordionOpen: boolean;
+// }
+
+// export type DisplaySettingsState = {
+//     backgroundBlocks: BackgroundBlock[];
+
+// }
+
 export  type BackgroundInputNumber = undefined | number;
 export type BackgroundInput = { 
     id: string;
+    isAccordionOpen: boolean;
     value: string;
     x: number;
     y: BackgroundInputNumber;
@@ -24,7 +35,7 @@ type GradientObjectAction = {
     editGradientObjectValue: (incomingState: Partial<GradientObjectState>) => void,
     addBackgroundLayer: () => void,
     deleteBackgroundLayer: (id: BackgroundInput['id']) => void,
-    editBackgroundValue: (id: BackgroundInput['id'], valueName: keyof BackgroundInput, value: BackgroundInput['value'] | BackgroundInputNumber) => void,
+    editBackgroundValue: (id: BackgroundInput['id'], valueName: keyof BackgroundInput, value: BackgroundInput['value'] | BackgroundInputNumber | BackgroundInput['isAccordionOpen']) => void,
     editCheckboxValue: () => void,
 }
 
@@ -36,10 +47,10 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     height: 20,
     isBorderShown: true,
     borderWidth: 1,
-    backgroundInputs: [{id: new Date().valueOf().toString(), value: gradientDefaultValue1, x: 30, y: 30, w: 20, h: 20, repeat: 'no-repeat'}],
+    backgroundInputs: [{id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue1, x: 30, y: 30, w: 20, h: 20, repeat: 'no-repeat'}],
     updateBackgroundInputs: (incomingState) => set((state) => ({ ...state, backgroundInputs: [...incomingState] })),
     editGradientObjectValue: (incomingState) => set((state) => ({ ...state, ...incomingState })),
-    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), value: gradientDefaultValue, x: 0, y: 0, w: 100, h: 100, repeat: 'no-repeat' }]})),
+    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue, x: 0, y: 0, w: 100, h: 100, repeat: 'no-repeat' }]})),
     deleteBackgroundLayer: (id) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.filter(item => item.id !== id)})),
     editBackgroundValue: (id, valueName, value) => set((state) => ({...state, backgroundInputs: state.backgroundInputs.map(i => {
         if (i.id === id) {

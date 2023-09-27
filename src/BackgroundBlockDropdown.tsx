@@ -9,7 +9,7 @@ type DropdownItem = {
 
 type BackgroundBlockDropdownProps = {
     backgroundId: BackgroundInput['id'];
-    backgroundPropName: keyof BackgroundInput;
+    backgroundPropName: keyof Pick<BackgroundInput, 'repeat' | 'value'>;
     items: DropdownItem[];
 }
 
