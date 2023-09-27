@@ -4,11 +4,13 @@ import "./NumberInput.css";
 
 type NumberInputProps = {
     inputName: keyof Pick<GradientObjectState, 'height' | 'width' | 'borderWidth'>;
-    unit: 'rem' | 'px';
+    unit: 'rem' | 'px' | '%';
+    isValueRelative?: boolean;
+    maxValue?: number;
 }
 
 export default function NumberInput ( props: NumberInputProps ) {
-    const { inputName, unit } = props;
+    const { inputName, unit, isValueRelative, maxValue } = props;
     const editValue = useGradientStore((state) => state.editGradientObjectValue);
     const inputValue = useGradientStore((state) => state[inputName]);
     return (
@@ -16,9 +18,8 @@ export default function NumberInput ( props: NumberInputProps ) {
             <div className="number-input-label">{editDisplayStylePropName(inputName)}: </div>
             <div className="number-input-input-wrapper">
                 <input 
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
+                    type="number"
+                    max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
                     onChange={(e) => editValue({ [inputName]: Number(e.currentTarget.value) })}
                     value={inputValue} 
                 /> 

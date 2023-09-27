@@ -1,5 +1,5 @@
 import { BackgroundInput, useGradientStore } from './store';
-import CodeInput from "./CodeInput";
+import GradientBlock from "./GradientBlock";
 import NumberInput from './NumberInput';
 import { useRef } from 'react';
 import "./BuilderPanel.css";
@@ -44,7 +44,7 @@ export default function BuilderPanel() {
                     onDragEnd={handleSort}
                     onDragOver={(e) => e.preventDefault()}
                 >
-                    <CodeInput key={item.id} id={item.id} />
+                    <GradientBlock key={item.id} id={item.id} />
                 </div>
             );
         });
@@ -52,8 +52,8 @@ export default function BuilderPanel() {
 
     return (
         <div className="panel-container">
-            <NumberInput key="number-input-width" inputName="width" unit="rem" />
-            <NumberInput key="number-input-height" inputName="height" unit="rem" />
+            <NumberInput key="number-input-width" inputName="width" unit="rem" maxValue={50} />
+            <NumberInput key="number-input-height" inputName="height" unit="rem" maxValue={34} />
             <div className="number-input-container">
                 <div className="number-input-label">border visible: </div>
                 <input 
@@ -65,7 +65,7 @@ export default function BuilderPanel() {
                     checked={!!isBorderShown} 
                 />
             </div>
-            <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" />
+            <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" maxValue={10} />
             {renderBackgroundInputs(backgroundInputs)}
             <button 
                 className="btn btn-primary add-bg-layer-btn"

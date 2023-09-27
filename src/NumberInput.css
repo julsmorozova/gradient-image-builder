@@ -23,13 +23,7 @@
 }
 
 .number-input-input-wrapper input {
-    height: 1.5rem;
-    border: none;
-    border-radius: 0.25rem;
-    padding: 0.25rem 0.5rem;
     width: 4rem;
-    box-shadow: inset 0 0 0.25rem #b1b1b1;
-    margin-right: 0.5rem;
 }
 
 .number-input-unit {

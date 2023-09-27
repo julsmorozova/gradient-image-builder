@@ -15,8 +15,8 @@ export default function Preview() {
         width: width + 'rem',
         height: height + 'rem',
         border: isBorderShown ? borderWidth + 'px solid #b1b1b1' : 'none',
-        backgroundImage: backgroundEditedValue,
-        backgroundRepeat: 'no-repeat',
+        background: backgroundEditedValue,
+        // backgroundRepeat: 'no-repeat',
     };
 
     const outcomeString = styleObjectToString(styleBlock);

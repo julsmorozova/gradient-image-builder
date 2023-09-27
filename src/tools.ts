@@ -6,7 +6,12 @@ export const styleObjectToString = (styleObject: CSSProperties) => {
 };
 
 export const concatBackgroundValues = (backgroundsArray: BackgroundInput[]) => {
-    return backgroundsArray.map(item => item.value).toString();
+    return backgroundsArray.map(item => item.value + 
+        ((item.x ? ' ' + item.x + '%' : ' 0%') + 
+        (item.y ? ' ' + item.y + '%' : ' 0%') +
+        '/' + (item.w ? ' ' + item.w + '%' : ' auto') + 
+        (item.h ? ' ' + item.h + '%' : ' auto') + ' no-repeat')
+        ).toString();
 };
 
 export const editDisplayStylePropName = (name: string) => {

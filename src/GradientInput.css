@@ -1,0 +1,74 @@
+.code-input-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.bg-value-container.row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: space-between;
+    height: fit-content;
+}
+
+.code-input-label {
+    display: flex;
+    flex-wrap: wrap;
+    width: 25%;
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+.code-input-input-wrapper {
+    display: flex;
+    align-items: start;
+    width: 75%;
+    justify-content: flex-end;
+}
+
+.code-input-input-wrapper input {
+    width: 2.5rem;
+    font-size: 0.875rem;
+}
+
+.btn.btn-secondary.delete-bg-layer-btn {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: none;
+    padding: 0.3125rem 0.5rem;
+}
+
+.bg-position-container.row, .bg-size-container.row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: space-between;
+    height: fit-content;
+    margin: 0.5rem 0;
+}
+
+.row.row-secondary {
+    margin-left: 10%;
+}
+
+.row.row-secondary .code-input-label  {
+    width: 45%;
+}
+
+.row.row-secondary .code-input-input-wrapper  {
+    width: 55%;
+}
+
+.code-input-input-wrapper-col {
+    display: flex;
+    align-items: baseline;
+    margin-right: 10%;
+    font-size: 0.875rem;
+}
+
+.code-input-input-wrapper-col .label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
