@@ -48,7 +48,7 @@ a {
   text-decoration: inherit;
 }
 
-input, textarea {
+input, textarea, select {
   border: none;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
@@ -66,7 +66,7 @@ textarea {
   min-height: 4.5em;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
   outline: 0.125rem solid var(--btn-primary-bg-color);
 }
 

@@ -1,5 +1,5 @@
 import { BackgroundInput, useGradientStore } from './store';
-import GradientBlock from "./GradientBlock";
+import BackgroundBlock from "./BackgroundBlock";
 import NumberInput from './NumberInput';
 import { useRef } from 'react';
 import "./BuilderPanel.css";
@@ -44,7 +44,7 @@ export default function BuilderPanel() {
                     onDragEnd={handleSort}
                     onDragOver={(e) => e.preventDefault()}
                 >
-                    <GradientBlock key={item.id} id={item.id} />
+                    <BackgroundBlock key={item.id} id={item.id} />
                 </div>
             );
         });
@@ -56,14 +56,16 @@ export default function BuilderPanel() {
             <NumberInput key="number-input-height" inputName="height" unit="rem" maxValue={34} />
             <div className="number-input-container">
                 <div className="number-input-label">border visible: </div>
-                <input 
-                    type="checkbox"
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
-                    onChange={editCheckboxValue}
-                    checked={!!isBorderShown} 
-                />
+                <div className="number-input-input-wrapper">
+                    <input 
+                        type="checkbox"
+                        data-gramm="false" 
+                        data-gramm_editor="false" 
+                        data-enable-grammarly="false" 
+                        onChange={editCheckboxValue}
+                        checked={!!isBorderShown} 
+                    />
+                </div>
             </div>
             <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" maxValue={10} />
             {renderBackgroundInputs(backgroundInputs)}

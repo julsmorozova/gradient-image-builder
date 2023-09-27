@@ -19,13 +19,20 @@
 .number-input-input-wrapper {
     display: flex;
     align-items: baseline;
-    min-width: 7.5rem;
+    justify-content: flex-end;
 }
 
 .number-input-input-wrapper input {
     width: 4rem;
 }
 
+.number-input-input-wrapper:has(input[type="checkbox"]) {
+    width: 2rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
 .number-input-unit {
     display: flex;
+    width: 2rem;
 }

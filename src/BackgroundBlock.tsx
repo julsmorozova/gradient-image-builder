@@ -1,12 +1,31 @@
 import GradientInput from './GradientInput';
-import './GradientInput.css';
+import './BackgroundBlock.css';
 import { useGradientStore } from './store';
+import BackgroundBlockDropdown from './BackgroundBlockDropdown';
 
-type GradientBlockProps = {
+type BackgroundBlockProps = {
     id: string;
 }
 
-export default function GradientBlock(props: GradientBlockProps) {
+const repeatOptions = [
+    {
+        id: 0,
+        name: 'noRepeat',
+        value: 'no-repeat',
+    },
+    {
+        id: 1,
+        name: 'repeatX',
+        value: 'repeat-x',
+    },
+    {
+        id: 2,
+        name: 'repeatY',
+        value: 'repeat-y',
+    },
+];
+
+export default function BackgroundBlock(props: BackgroundBlockProps) {
     const id = props.id;
     const backgroundLayersLength = useGradientStore((state) => state.backgroundInputs.length);
     // const layerIndex = useGradientStore((state) => state.backgroundInputs.findIndex((i => i.id === id)));
@@ -65,6 +84,10 @@ export default function GradientBlock(props: GradientBlockProps) {
                         isValueRelative
                     />
                 </div>
+            </div>
+            <div className="bg-size-container row row-secondary">
+            <div className="code-input-label label">repeat: </div>
+                <BackgroundBlockDropdown items={repeatOptions} backgroundId={id} backgroundPropName='repeat' />
             </div>
         </div>
     );

@@ -10,7 +10,8 @@ export const concatBackgroundValues = (backgroundsArray: BackgroundInput[]) => {
         ((item.x ? ' ' + item.x + '%' : ' 0%') + 
         (item.y ? ' ' + item.y + '%' : ' 0%') +
         '/' + (item.w ? ' ' + item.w + '%' : ' auto') + 
-        (item.h ? ' ' + item.h + '%' : ' auto') + ' no-repeat')
+        (item.h ? ' ' + item.h + '%' : ' auto') + 
+        (item.repeat ? ' ' + item.repeat : ' no-repeat'))
         ).toString();
 };
 

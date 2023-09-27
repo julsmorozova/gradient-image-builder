@@ -8,7 +8,7 @@ export default function App() {
     <>
       <header>
         <div className="text-block-wrapper">
-          <div className="text-block">Gradient Builder</div>
+          <div className="text-block">Gradient Image Builder</div>
         </div>
       </header>
       <main>

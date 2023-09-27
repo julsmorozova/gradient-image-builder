@@ -33,7 +33,7 @@ export default function GradientInput ( props: GradientInputProps ) {
                     <div className="label">{handleInputName(backgroundPropName)}</div>
                     <input 
                         type="number"
-                        max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
+                        max={maxValue}
                         onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value) }
                         value={backgroundValue} 
                     /> 
