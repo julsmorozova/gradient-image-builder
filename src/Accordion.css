@@ -1,6 +1,17 @@
 .accordion-header {
-    display: flex;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 5fr 4fr 5fr 7fr 7fr 2fr 2rem;
+    grid-template-rows: auto;
+    padding: 0 0 0.5rem;
+}
+
+.acc-header-content {
+    grid-column: 1/7;
+}
+
+.accordion-body {
+    background-color: #f3f3f3;
+    padding: 0.5rem 0;
 }
 
 .accordion-body.collapsed {
@@ -8,7 +19,11 @@
 }
 
 .btn.btn-secondary.accordion-btn {
-    padding: 0.25rem 0.25rem;
+    padding: 0.35rem 0.25rem;
+    margin-top: 0.125rem;
+    grid-column: 7/7;
+    justify-self: center;
+    display: flex
 }
 
 span.arrow-btn {

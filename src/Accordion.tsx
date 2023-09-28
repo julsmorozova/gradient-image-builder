@@ -15,11 +15,11 @@ export default function Accordion (props: AccordionProps) {
     const isAccordionOpen = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.['isAccordionOpen']);
     return (
         <div className="accordion-container">
-            <div className="accordion-header" onClick={() => setAccordionOpen(backgroundId, 'isAccordionOpen', !isAccordionOpen)}>
+            <div className="accordion-header">
                 <div className="acc-header-content">
                     {headerContent}
                 </div>
-                <button type="button" className="btn btn-secondary accordion-btn">
+                <button type="button" className="btn btn-secondary accordion-btn" onClick={() => setAccordionOpen(backgroundId, 'isAccordionOpen', !isAccordionOpen)}>
                     <span className={classnames("arrow-btn", {'up': isAccordionOpen, 'down': !isAccordionOpen})} />
                 </button>
             </div>

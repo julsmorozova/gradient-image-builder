@@ -41,7 +41,7 @@ main {
   display: flex;
   flex-direction: column;
   flex: 0 1 40%;
-  padding: 1rem;
+  padding: 1rem 0;
   background-color: #fafafa;
 }
 
@@ -51,4 +51,23 @@ main {
 
 .panel-container:first-of-type {
   border-right: 1px solid #eee;
+}
+
+@media (max-width: 600px) {
+  main {
+    flex-direction: column-reverse;
+  }
+  .panel-container {
+    width: 100%;
+    flex: unset;
+  }
+  .panel-container:has(.preview-container) {
+    flex: unset;
+  }
+  .text-block-wrapper {
+    width: unset;
+  }
+  .text-block {
+    left: -5%;
+  }
 }

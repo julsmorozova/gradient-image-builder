@@ -1,7 +1,5 @@
 .code-input-container {
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
 }
 
@@ -16,7 +14,7 @@
 .code-input-label {
     display: flex;
     flex-wrap: wrap;
-    width: 25%;
+    padding-left: 1rem;
     margin-right: 0.5rem;
     font-weight: 600;
 }
@@ -24,7 +22,7 @@
 .code-input-input-wrapper {
     display: flex;
     align-items: start;
-    width: 75%;
+    width: 70%;
     justify-content: flex-end;
 }
 
@@ -51,21 +49,42 @@
 }
 
 .row.row-secondary {
-    margin-left: 10%;
+    display: grid;
+    grid-template-columns: 4fr 4fr 5fr 7fr 7fr 2rem 2rem;
+    grid-template-rows: auto;
 }
 
 .row.row-secondary .code-input-label  {
-    width: 45%;
+    grid-column: 2/4;
 }
 
 .row.row-secondary .code-input-input-wrapper  {
-    width: 55%;
+    grid-column: 4/7;
+    width: unset;
 }
 
 .code-input-input-wrapper-col {
-    display: flex;
+    display: grid;
     align-items: baseline;
     font-size: 0.875rem;
+    grid-column: 4/5;
+    justify-self: end;
+}
+
+.code-input-input-wrapper-col input {
+    width: 3rem;
+}
+
+.code-input-input-wrapper-col:last-child {
+    grid-column: 5/7;
+}
+
+.code-input-input-wrapper-col:last-child input {
+    grid-column: 5/6;
+}
+
+.code-input-input-wrapper-col:last-child .number-input-unit {
+    grid-column: 6/6;
 }
 
 .code-input-input-wrapper-col .label {

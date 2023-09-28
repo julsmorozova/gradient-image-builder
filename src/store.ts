@@ -1,16 +1,6 @@
 import { create } from 'zustand';
 
-// type BackgroundBlock = {
-//     id: string;
-//     isAccordionOpen: boolean;
-// }
-
-// export type DisplaySettingsState = {
-//     backgroundBlocks: BackgroundBlock[];
-
-// }
-
-export  type BackgroundInputNumber = undefined | number;
+export type BackgroundInputNumber = undefined | number;
 export type BackgroundInput = { 
     id: string;
     isAccordionOpen: boolean;
@@ -19,7 +9,8 @@ export type BackgroundInput = {
     y: BackgroundInputNumber;
     w: BackgroundInputNumber;
     h: BackgroundInputNumber;
-    repeat: 'repeat-x' | 'repeat-y' | 'no-repeat';
+    repeat?: string;
+    // repeat?: 'repeat-x' | 'repeat-y' | 'no-repeat';
 }
 
 export type GradientObjectState = {
