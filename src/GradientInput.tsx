@@ -8,10 +8,11 @@ type GradientInputProps = {
     maxValue?: number;
     backgroundPropName: keyof Pick<BackgroundInput, 'value' | 'x'| 'y'| 'h'| 'w'>;
     backgroundId: BackgroundInput['id'];
+    isNegativeValAllowed?: boolean;
 }
 
 export default function GradientInput ( props: GradientInputProps ) {
-    const { isStringInput, unit, isValueRelative, maxValue, backgroundPropName, backgroundId } = props;
+    const { isStringInput, unit, isValueRelative, maxValue, backgroundPropName, backgroundId, isNegativeValAllowed } = props;
     const editBackgroundValue = useGradientStore((state) => state.editBackgroundValue);
     const backgroundValue = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.[backgroundPropName]);
 
@@ -35,7 +36,8 @@ export default function GradientInput ( props: GradientInputProps ) {
                         type="number"
                         max={maxValue}
                         onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value) }
-                        value={backgroundValue} 
+                        value={backgroundValue}
+                        min={isNegativeValAllowed ? undefined : 0} 
                     /> 
                     <span className="number-input-unit">{unit ? unit : isValueRelative ? '%' : ''}</span>
                 </div>

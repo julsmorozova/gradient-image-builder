@@ -64,12 +64,14 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                             backgroundId={id}
                             backgroundPropName='x'
                             isValueRelative
+                            isNegativeValAllowed
                         />
                         <GradientInput
                             key={`${id}-y`}
                             backgroundId={id}
                             backgroundPropName='y'
                             isValueRelative
+                            isNegativeValAllowed
                         />
                     </div>
                     <div className="bg-size-container row row-secondary">

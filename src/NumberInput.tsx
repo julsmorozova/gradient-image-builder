@@ -7,10 +7,11 @@ type NumberInputProps = {
     unit: 'rem' | 'px' | '%';
     isValueRelative?: boolean;
     maxValue?: number;
+    isNegativeValAllowed?: boolean;
 }
 
 export default function NumberInput ( props: NumberInputProps ) {
-    const { inputName, unit, isValueRelative, maxValue } = props;
+    const { inputName, unit, isValueRelative, maxValue, isNegativeValAllowed } = props;
     const editValue = useGradientStore((state) => state.editGradientObjectValue);
     const inputValue = useGradientStore((state) => state[inputName]);
     return (
@@ -20,6 +21,7 @@ export default function NumberInput ( props: NumberInputProps ) {
                 <input 
                     type="number"
                     max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
+                    min={isNegativeValAllowed ? undefined : 0}
                     onChange={(e) => editValue({ [inputName]: Number(e.currentTarget.value) })}
                     value={inputValue} 
                 /> 

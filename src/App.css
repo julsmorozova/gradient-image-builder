@@ -47,6 +47,7 @@ main {
 
 .panel-container:has(.preview-container) {
   flex: 0 1 60%;
+  padding: 1rem;
 }
 
 .panel-container:first-of-type {
