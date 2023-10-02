@@ -3,6 +3,7 @@ import './BackgroundBlock.css';
 import { useGradientStore } from './store';
 import BackgroundBlockDropdown from './BackgroundBlockDropdown';
 import Accordion from './Accordion';
+import { Tooltip } from 'react-tooltip';
 
 type BackgroundBlockProps = {
     id: string;
@@ -30,6 +31,7 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
     const id = props.id;
     const backgroundLayersLength = useGradientStore((state) => state.backgroundInputs.length);
     const deleteBackgroundLayer = useGradientStore((state) => state.deleteBackgroundLayer);
+    const cloneLayer = useGradientStore((state) => state.cloneLayer);
     return (
         <div className="code-input-container">
             <Accordion 
@@ -45,13 +47,28 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                                 backgroundPropName='value'
                                 isValueRelative
                             />
-                            <button 
-                                disabled={backgroundLayersLength === 1}
-                                className="btn btn-secondary delete-bg-layer-btn" 
-                                onClick={() => deleteBackgroundLayer(id)}
-                            >
-                                x
-                            </button>
+                            <div className="code-input-wrapper btn-wrapper">
+                                <button 
+                                    disabled={backgroundLayersLength === 1}
+                                    className="btn btn-secondary delete-bg-layer-btn" 
+                                    onClick={() => deleteBackgroundLayer(id)}
+                                    data-tooltip-id="delete-layer" 
+                                    data-tooltip-content="Remove layer"
+                                >
+                                    x
+                                </button>
+                                {backgroundLayersLength > 1 && <Tooltip id="delete-layer" />}
+                                <button 
+                                    className="btn btn-secondary duplicate-bg-layer-btn" 
+                                    onClick={() => cloneLayer(id)}
+                                    data-tooltip-id="clone-layer" 
+                                    data-tooltip-content="Clone layer"
+                                    data-tooltip-place="right"
+                                >
+                                    <div className="copy-icon" />
+                                </button>
+                                <Tooltip id="clone-layer" />
+                            </div>
                         </div>
                     </div>
                 )}

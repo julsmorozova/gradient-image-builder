@@ -6,7 +6,7 @@ export const styleObjectToString = (styleObject: CSSProperties) => {
 };
 
 export const concatBackgroundValues = (backgroundsArray: BackgroundInput[]) => {
-    return backgroundsArray.map(item => item.value.endsWith(')') || item.value.endsWith(') ') ? item.value + 
+    return backgroundsArray.map(item => item.value?.endsWith(')') || item.value?.endsWith(') ') ? item.value + 
         ((item.x ? ' ' + item.x + '%' : ' 0%') + 
         (item.y ? ' ' + item.y + '%' : ' 0%') +
         '/' + (item.w ? ' ' + item.w + '%' : ' auto') + 
@@ -20,8 +20,8 @@ export const editDisplayStylePropName = (name: string) => {
 }
 
 export const parseGradientString = (string: BackgroundInput['value']): Partial<BackgroundInput> | null => {
-    const strForParsing = string.substring(string.indexOf(')') + 1);
-    if (strForParsing !== ' ') {
+    const strForParsing = string && string.substring(string.indexOf(')') + 1);
+    if (strForParsing && strForParsing !== ' ') {
         const x = parseInt(strForParsing.substring(0, strForParsing.indexOf('/')).split(' ').filter(i => i !== '')[0]);
         const y = parseInt(strForParsing.substring(0, strForParsing.indexOf('/')).split(' ').filter(i => i !== '')[1]);
         const w = parseInt(strForParsing.substring(strForParsing.indexOf('/') + 1).split(' ').filter(i => i !== '')[0]);
@@ -34,3 +34,16 @@ export const parseGradientString = (string: BackgroundInput['value']): Partial<B
     }
     
 }
+
+export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id']) => {
+    const curIndex: number = items.findIndex((i: BackgroundInput) => i.id === id);
+    const copiedItem: BackgroundInput = items[curIndex] && {
+        ...items[curIndex], 
+        id: new Date().valueOf().toString(),
+        isAccordionOpen: false,
+    };
+
+    console.log("curIndex:", curIndex, "current id: ", id, "copy id: ", copiedItem.id);
+
+    return items.toSpliced(curIndex, 0, copiedItem);
+};

@@ -33,6 +33,7 @@ export default function BuilderPanel() {
         updateBackgroundInputs(copiedBackgrounds);
     };
 
+
     const renderBackgroundInputs = (items: BackgroundInput[]) => {
         return items.map((item, index) => {
             return (

@@ -1,14 +1,15 @@
 import { create } from 'zustand';
+import { handleClone } from './tools';
 
 export type BackgroundInputNumber = undefined | number;
 export type BackgroundInput = { 
     id: string;
-    isAccordionOpen: boolean;
-    value: string;
-    x: number;
-    y: BackgroundInputNumber;
-    w: BackgroundInputNumber;
-    h: BackgroundInputNumber;
+    isAccordionOpen?: boolean;
+    value?: string;
+    x?: number;
+    y?: BackgroundInputNumber;
+    w?: BackgroundInputNumber;
+    h?: BackgroundInputNumber;
     repeat?: string;
     // repeat?: 'repeat-x' | 'repeat-y' | 'no-repeat';
 }
@@ -23,6 +24,7 @@ export type GradientObjectState = {
 
 type GradientObjectAction = {
     updateBackgroundInputs: (incomingState: BackgroundInput[]) => void,
+    cloneLayer: (id: BackgroundInput['id']) => void,
     editGradientObjectValue: (incomingState: Partial<GradientObjectState>) => void,
     addBackgroundLayer: () => void,
     deleteBackgroundLayer: (id: BackgroundInput['id']) => void,
@@ -39,12 +41,14 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     isBorderShown: true,
     borderWidth: 1,
     backgroundInputs: [{id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue1, x: 30, y: 30, w: 20, h: 20, repeat: 'no-repeat'}],
+    cloneLayer: (id) => set((state) => ({ ...state, backgroundInputs: [...handleClone(state.backgroundInputs, id)]})),
     updateBackgroundInputs: (incomingState) => set((state) => ({ ...state, backgroundInputs: [...incomingState] })),
     editGradientObjectValue: (incomingState) => set((state) => ({ ...state, ...incomingState })),
     addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue, x: 0, y: 0, w: 100, h: 100, repeat: 'no-repeat' }]})),
     deleteBackgroundLayer: (id) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.filter(item => item.id !== id)})),
     editBackgroundValue: (id, valueName, value) => set((state) => ({...state, backgroundInputs: state.backgroundInputs.map(i => {
         if (i.id === id) {
+            console.log("editing id:", id)
             return { ...i, [valueName]: value};
         } else {
             return i;
