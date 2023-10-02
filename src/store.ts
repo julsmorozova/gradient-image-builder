@@ -4,6 +4,7 @@ import { handleClone } from './tools';
 export type BackgroundInputNumber = undefined | number;
 export type BackgroundInput = { 
     id: string;
+    isDefaultData: boolean;
     isAccordionOpen?: boolean;
     value?: string;
     x?: number;
@@ -40,16 +41,16 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     height: 20,
     isBorderShown: true,
     borderWidth: 1,
-    backgroundInputs: [{id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue1, x: 30, y: 30, w: 20, h: 20, repeat: 'no-repeat'}],
+    backgroundInputs: [{id: new Date().valueOf().toString(), isDefaultData: true, isAccordionOpen: true, value: gradientDefaultValue1, x: 30, y: 30, w: 20, h: 20, repeat: 'no-repeat'}],
     cloneLayer: (id) => set((state) => ({ ...state, backgroundInputs: [...handleClone(state.backgroundInputs, id)]})),
     updateBackgroundInputs: (incomingState) => set((state) => ({ ...state, backgroundInputs: [...incomingState] })),
     editGradientObjectValue: (incomingState) => set((state) => ({ ...state, ...incomingState })),
-    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), isAccordionOpen: true, value: gradientDefaultValue, x: 0, y: 0, w: 100, h: 100, repeat: 'no-repeat' }]})),
+    addBackgroundLayer: () => set((state) => ({ ...state, backgroundInputs: [ ...state.backgroundInputs, { id: new Date().valueOf().toString(), isDefaultData: true, isAccordionOpen: true, value: gradientDefaultValue, x: 0, y: 0, w: 100, h: 100, repeat: 'no-repeat' }]})),
     deleteBackgroundLayer: (id) => set((state) => ({ ...state, backgroundInputs: state.backgroundInputs.filter(item => item.id !== id)})),
     editBackgroundValue: (id, valueName, value) => set((state) => ({...state, backgroundInputs: state.backgroundInputs.map(i => {
         if (i.id === id) {
             console.log("editing id:", id)
-            return { ...i, [valueName]: value};
+            return { ...i, isDefaultData: false, [valueName]: value};
         } else {
             return i;
         }

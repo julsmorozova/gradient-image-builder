@@ -40,6 +40,7 @@ export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id'])
     const copiedItem: BackgroundInput = items[curIndex] && {
         ...items[curIndex], 
         id: new Date().valueOf().toString(),
+        isDefaultData: false,
         isAccordionOpen: false,
     };
 

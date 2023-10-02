@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: 5fr 4fr 5fr 7fr 7fr 2rem 2rem;
     grid-template-rows: auto;
+    align-items: self-start;
 }
 
 .number-input-label {
@@ -18,12 +19,24 @@
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
-    grid-column: 5 / 7
+    grid-column: 5 / 7;
 }
 
 .number-input-input-wrapper input {
     width: 4rem;
+    margin-right: 0;
 }
+
+.number-input-input-wrapper .input-decoration {
+    border-bottom: 2px solid #d7d6d6;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin-right: 0.25rem;
+  }
+
+  .number-input-input-wrapper .input-decoration:has(input:focus)  {
+    border-color: #1fabd0;
+  }
 
 .number-input-input-wrapper:has(input[type="checkbox"]) {
     grid-column: 5/6;

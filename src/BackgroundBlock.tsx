@@ -4,6 +4,7 @@ import { useGradientStore } from './store';
 import BackgroundBlockDropdown from './BackgroundBlockDropdown';
 import Accordion from './Accordion';
 import { Tooltip } from 'react-tooltip';
+import classnames from 'classnames';
 
 type BackgroundBlockProps = {
     id: string;
@@ -32,13 +33,17 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
     const backgroundLayersLength = useGradientStore((state) => state.backgroundInputs.length);
     const deleteBackgroundLayer = useGradientStore((state) => state.deleteBackgroundLayer);
     const cloneLayer = useGradientStore((state) => state.cloneLayer);
+    const isDefaultData = useGradientStore((state) => state.backgroundInputs.find(i => i.id === id)?.isDefaultData);
     return (
         <div className="code-input-container">
             <Accordion 
                 backgroundId={id}
                 headerContent={(
                     <div className="bg-value-container row">
-                        <div className="code-input-label">gradient: </div>
+                        <div className="code-input-label">
+                            <div>gradient: </div>
+                            <div className={classnames("default-data-flag", {show: isDefaultData})}>default data</div>
+                        </div>
                         <div className="code-input-input-wrapper">
                             <GradientInput
                                 key={`${id}-value`}

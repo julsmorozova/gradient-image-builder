@@ -42,7 +42,7 @@ main {
   display: flex;
   flex-direction: column;
   flex: 0 1 40%;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
 }
 
 .panel-container:has(.preview-container) {

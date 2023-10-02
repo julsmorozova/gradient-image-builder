@@ -22,23 +22,28 @@ export default function GradientInput ( props: GradientInputProps ) {
 
     return (
         isStringInput ? 
-            <textarea 
-                data-gramm="false" 
-                data-gramm_editor="false" 
-                data-enable-grammarly="false" 
-                onChange={(e) => editBackgroundValue(backgroundId, 'value', e.currentTarget.value)}
-                value={backgroundValue} 
-            /> :
+            <div className="input-decoration">
+                <textarea 
+                    data-gramm="false" 
+                    data-gramm_editor="false" 
+                    data-enable-grammarly="false" 
+                    onChange={(e) => editBackgroundValue(backgroundId, 'value', e.currentTarget.value)}
+                    value={backgroundValue} 
+                    spellCheck="false"
+                />
+            </div> :
             (
                 <div className="code-input-input-wrapper-col">
                     <div className="label">{handleInputName(backgroundPropName)}</div>
-                    <input 
-                        type="number"
-                        max={maxValue}
-                        onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value) }
-                        value={backgroundValue}
-                        min={isNegativeValAllowed ? undefined : 0} 
-                    /> 
+                    <div className="input-decoration">
+                        <input 
+                            type="number"
+                            max={maxValue}
+                            onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value) }
+                            value={backgroundValue}
+                            min={isNegativeValAllowed ? undefined : 0} 
+                        />
+                    </div> 
                     <span className="number-input-unit">{unit ? unit : isValueRelative ? '%' : ''}</span>
                 </div>
             )

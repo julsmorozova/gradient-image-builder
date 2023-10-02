@@ -6,7 +6,7 @@
 .bg-value-container.row {
     display: flex;
     flex-wrap: nowrap;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     height: fit-content;
 }
@@ -17,6 +17,20 @@
     padding-left: 1rem;
     margin-right: 0.5rem;
     font-weight: 600;
+    max-width: 25%;
+}
+
+.default-data-flag {
+    display: none;
+}
+
+.default-data-flag.show {
+    display: block;
+    color: #1fabd0; /* #23d5da; */
+    font-style: italic;
+    font-size: 0.815rem;
+    margin-left: 1rem;
+    font-weight: 500;
 }
 
 .code-input-input-wrapper {
@@ -26,9 +40,32 @@
     justify-content: flex-end;
 }
 
+.code-input-input-wrapper .input-decoration,
+.code-input-input-wrapper-col .input-decoration {
+    display: flex;
+    align-items: start;
+    width: 100%;
+    justify-content: flex-end;
+    border-bottom: 2px solid #d7d6d6;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin-right: 0.25rem;
+}
+
+.code-input-input-wrapper-col .input-decoration:has(input:focus), 
+.code-input-input-wrapper .input-decoration:has(textarea:focus),
+.code-input-input-wrapper-col .input-decoration:has(select:focus)  {
+    border-color: #1fabd0;
+}
+
 .code-input-input-wrapper input {
     width: 2.5rem;
     font-size: 0.875rem;
+    margin-right: 0;
+}
+
+.code-input-input-wrapper textarea {
+    margin-right: 0;
 }
 
 .code-input-wrapper.btn-wrapper {
@@ -99,10 +136,12 @@
     font-size: 0.875rem;
     grid-column: 4/5;
     justify-self: end;
+    position: relative;
 }
 
 .code-input-input-wrapper-col input {
     width: 3rem;
+    margin-right: 0;
 }
 
 .code-input-input-wrapper-col:last-child {
