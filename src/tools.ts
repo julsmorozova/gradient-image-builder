@@ -48,3 +48,9 @@ export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id'])
 
     return items.toSpliced(curIndex, 0, copiedItem);
 };
+
+
+export const getColorsFromInput = (input: string): string[] => {
+    const re = /(^[a-zA-Z]+$)|transparent|(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s/]*[\d.]+%?\))/ig;
+    return [...input.matchAll(re)].map(i => i[0]);
+};

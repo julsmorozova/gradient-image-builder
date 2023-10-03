@@ -27,17 +27,6 @@
     margin-right: 0;
 }
 
-.number-input-input-wrapper .input-decoration {
-    border-bottom: 2px solid #d7d6d6;
-    border-radius: 0.25rem;
-    background-color: #fff;
-    margin-right: 0.25rem;
-  }
-
-  .number-input-input-wrapper .input-decoration:has(input:focus)  {
-    border-color: #1fabd0;
-  }
-
 .number-input-input-wrapper:has(input[type="checkbox"]) {
     grid-column: 5/6;
     justify-self: end;

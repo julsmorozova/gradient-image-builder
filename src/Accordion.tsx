@@ -12,7 +12,7 @@ type AccordionProps = {
 
 export default function Accordion (props: AccordionProps) {
     const { headerContent, backgroundId, children } = props;
-    const setAccordionOpen = useGradientStore((state) => state.editBackgroundValue);
+    const toggleAccordion = useGradientStore((state) => state.toggleAccordion);
     const isAccordionOpen = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.['isAccordionOpen']);
     return (
         <div className="accordion-container">
@@ -23,7 +23,7 @@ export default function Accordion (props: AccordionProps) {
                 <button 
                     type="button" 
                     className="btn btn-secondary accordion-btn" 
-                    onClick={() => setAccordionOpen(backgroundId, 'isAccordionOpen', !isAccordionOpen)}
+                    onClick={() => toggleAccordion(backgroundId)}
                     data-tooltip-id="accordion-toggle" 
                     data-tooltip-content={isAccordionOpen ? 'Hide bg configs' : 'Show bg configs'}
                 >

@@ -19,11 +19,13 @@ export default function BackgroundBlockDropdown (props: BackgroundBlockDropdownP
     const backgroundValue = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.[backgroundPropName]);
     return (
         <div className="background-dropdown">
+            <div className="input-decoration">
             <select value={backgroundValue} onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value )}>
                 {items.map(item => (
                     <option key={item.name} className="background-dropdown">{item.value}</option>
                 ))}
             </select>
+            </div>
         </div>
     );
 

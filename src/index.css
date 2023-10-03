@@ -70,6 +70,23 @@ input:focus, textarea:focus, select:focus {
   border: none;
 }
 
+.input-decoration {
+  display: flex;
+  align-items: start;
+  width: 100%;
+  justify-content: flex-end;
+  border-bottom: 2px solid #d7d6d6;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  margin-right: 0.25rem;
+}
+
+.input-decoration:has(select:focus), 
+.input-decoration:has(textarea:focus),
+.input-decoration:has(input:focus) {
+  border-color: #1fabd0;
+}
+
 input[type=checkbox] {
   all: unset;
   -webkit-appearance: none;
