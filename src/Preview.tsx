@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { useGradientStore } from './store';
 import './Preview.css';
 import { styleObjectToString, concatBackgroundValues } from './tools';
+import OutcomeCodeBlock from './OutcomeCodeBlock';
 
 export default function Preview() {
     const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
@@ -23,10 +24,13 @@ export default function Preview() {
     console.log(outcomeString);
 
     return (
-        <div className='preview-container'>
-            <Fragment>
-                <div style={styleBlock}></div>
-            </Fragment>
-        </div>
+        <>
+            <div className='preview-container'>
+                <Fragment>
+                    <div style={styleBlock}></div>
+                </Fragment>
+            </div>
+            <OutcomeCodeBlock outcome={outcomeString} />
+        </>
     );
 }

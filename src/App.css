@@ -24,7 +24,6 @@ header {
 
 .text-block {
   background-color: #fff;
-  padding: 0.5rem 0;
   position: relative;
   left: -15%;
   width: 120%;
@@ -34,7 +33,7 @@ main {
   display: flex;
   width: 100%;
   /* subtracting header height */
-  height: calc(100% - 5.5rem); 
+  height: calc(100% - 4.5rem); 
 }
 
 .panel-container {
@@ -66,6 +65,7 @@ main {
 @media (max-width: 820px) {
   main {
     flex-direction: column-reverse;
+    height: unset;
   }
   .panel-container {
     width: 100%;
@@ -73,6 +73,9 @@ main {
   }
   .panel-container:has(.preview-container) {
     flex: unset;
+    position: sticky;
+    top: 0;
+    padding: 1rem 0;
   }
   .text-block-wrapper {
     width: unset;

@@ -203,6 +203,31 @@ button.btn:disabled:focus {
   border-color: transparent;
 }
 
+.btn.btn-secondary.duplicate-bg-layer-btn {
+  padding: 0.3125rem 0.5rem 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.duplicate-bg-layer-btn .copy-icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 2px solid #222;
+  border-radius: 2px;
+  position: relative;
+}
+
+.duplicate-bg-layer-btn .copy-icon::after {
+  position: absolute;
+  top: 0.125rem;
+  left: -0.35rem;
+  content: "";
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: #fff;
+  border: 2px solid #222;
+  border-radius: 2px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #222;
