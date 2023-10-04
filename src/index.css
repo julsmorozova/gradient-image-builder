@@ -73,12 +73,15 @@ input:focus, textarea:focus, select:focus {
 .input-decoration {
   display: flex;
   align-items: start;
-  width: 100%;
   justify-content: flex-end;
   border-bottom: 2px solid #d7d6d6;
   border-radius: 0.25rem;
   background-color: #fff;
   margin-right: 0.25rem;
+}
+
+.input-decoration:has(textarea) {
+  width: 100%;
 }
 
 .input-decoration:has(select:focus), 
@@ -210,5 +213,14 @@ button.btn:disabled:focus {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (min-width: 820px) and (max-width: 1030px) {
+  #root {
+    font-size: 0.75rem;
+  }
+  input, textarea, select {
+    font-size: 0.75rem;
   }
 }

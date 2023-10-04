@@ -15,6 +15,7 @@
 .code-input-label {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     padding-left: 1rem;
     margin-right: 0.5rem;
     font-weight: 600;
@@ -142,4 +143,13 @@
 .code-input-input-wrapper-col .label {
     font-weight: 600;
     margin-right: 0.5rem;
+}
+
+@media (min-width: 770px) and (max-width: 1030px) {
+    .code-input-input-wrapper-col input {
+        width: 2rem;
+    }
+    .code-input-input-wrapper-col  {
+        font-size: 0.75rem;
+    }
 }

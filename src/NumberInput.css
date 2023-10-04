@@ -23,7 +23,7 @@
 }
 
 .number-input-input-wrapper input {
-    width: 4rem;
+    width: 3rem;
     margin-right: 0;
 }
 
@@ -36,4 +36,11 @@
 .number-input-unit {
     min-width: 2rem;
     grid-column: 6 / 7;
+}
+
+
+@media (min-width: 820px) and (max-width: 1030px) {
+    .number-input-input-wrapper input {
+        width: 2rem;
+    }
 }
