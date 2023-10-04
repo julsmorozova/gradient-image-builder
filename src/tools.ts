@@ -1,6 +1,11 @@
 import { CSSProperties } from 'react';
 import { BackgroundInput } from './store';
 
+export enum GradientType {
+    RADIAL = 'radial',
+	LINEAR = 'linear',
+}
+
 export const styleObjectToString = (styleObject: CSSProperties) => {
     return Object.entries(styleObject).map(([k, v]) => k.toString().replace(/[A-Z]/g, match => `-${match.toLowerCase()}`) + `: ${v}`).join(';\n') + ';';
 };
@@ -54,3 +59,7 @@ export const getColorsFromInput = (input: string): string[] => {
     const re = /(^[a-zA-Z]+$)|transparent|(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s/]*[\d.]+%?\))/ig;
     return [...input.matchAll(re)].map(i => i[0]);
 };
+
+export const getGradientType = (input: string): GradientType => {
+    return input.startsWith("radial-") ? GradientType.RADIAL : GradientType.LINEAR;
+}

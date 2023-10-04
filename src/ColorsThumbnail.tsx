@@ -1,4 +1,4 @@
-import { getColorsFromInput } from "./tools";
+import { GradientType, getColorsFromInput, getGradientType } from "./tools";
 import { BackgroundInput, useGradientStore } from "./store";
 import { Tooltip } from "react-tooltip";
 
@@ -10,8 +10,9 @@ export default function ColorsThumbnail (props: ColorsThumbnailProps) {
     const { id } = props;
     const value = useGradientStore((state) => state.backgroundInputs.find(i => i.id === id)?.value);
     const parsedColors = value && getColorsFromInput(value);
-    const gradientValue = parsedColors?.toString() && `linear-gradient(${parsedColors?.toString()})`;
-
+    const gradientType = value && getGradientType(value);
+    const gradientValue = parsedColors?.toString() && (
+        gradientType === GradientType.LINEAR ? `linear-gradient(${parsedColors?.toString()})` : `radial-gradient(${parsedColors?.toString()})`);
     const styleBlock = {
         width: '3rem',
         height: '1.5rem',
