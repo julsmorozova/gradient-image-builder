@@ -12,8 +12,8 @@ export default function BuilderPanel() {
     const addBackgroundLayer = useGradientStore((state) => state.addBackgroundLayer);
     const updateBackgroundInputs = useGradientStore((state) => state.updateBackgroundInputs);
 
-    const dragItem = useRef<any>(null);
-    const dragOverItem = useRef<any>(null);
+    const dragItem = useRef<number | null>(null);
+    const dragOverItem = useRef<number | null>(null);
 
     const dragStart = (index: number) => {
         dragItem.current = index;
@@ -25,11 +25,10 @@ export default function BuilderPanel() {
 
     const handleSort = () => {
         const copiedBackgrounds = [...backgroundInputs];
-        const dragItemContent = copiedBackgrounds.splice(dragItem.current, 1)[0];
-        copiedBackgrounds.splice(dragOverItem.current, 0, dragItemContent);
+        const dragItemContent = dragItem.current !== null && copiedBackgrounds.splice(dragItem.current, 1)[0];
+        dragOverItem.current !== null && dragItemContent && copiedBackgrounds.splice(dragOverItem.current, 0, dragItemContent);
         dragItem.current = null;
         dragOverItem.current = null;
-        console.log("copiedBackgrounds: ", copiedBackgrounds); // TODO remove
         updateBackgroundInputs(copiedBackgrounds);
     };
 

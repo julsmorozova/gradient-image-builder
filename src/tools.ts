@@ -50,8 +50,9 @@ export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id'])
     };
 
     console.log("curIndex:", curIndex, "current id: ", id, "copy id: ", copiedItem.id);
-
-    return items.toSpliced(curIndex, 0, copiedItem);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return items.toSpliced(curIndex, 0, copiedItem); 
 };
 
 
