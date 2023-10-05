@@ -4,6 +4,7 @@ import NumberInput from './NumberInput';
 import { useRef } from 'react';
 import "./BuilderPanel.css";
 import "./NumberInput.css";
+import { Tooltip } from 'react-tooltip';
 
 export default function BuilderPanel() {
     const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
@@ -52,6 +53,18 @@ export default function BuilderPanel() {
 
     return (
         <div className="panel-container">
+            <div className="control-panel">
+                <button
+                    id="clear-data-btn" 
+                    className="builder-panel btn btn-secondary clear-data-btn" 
+                    onClick={ () => useGradientStore.persist.clearStorage()}
+                    data-tooltip-id="clear-data" 
+                    data-tooltip-content="Clear stored data"
+                >
+                    <div className="clear-icon" />
+                </button>
+                <Tooltip id="clear-data" />
+            </div>
             <NumberInput key="number-input-width" inputName="width" unit="rem" maxValue={50} />
             <NumberInput key="number-input-height" inputName="height" unit="rem" maxValue={34} />
             <div className="number-input-container">

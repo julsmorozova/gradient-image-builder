@@ -228,6 +228,41 @@ button.btn:disabled:focus {
   border-radius: 2px;
 }
 
+.clear-icon {
+  grid-column: 2/2;
+  width: 0.5rem;
+  height: 1rem;
+  border: 0.125rem solid #222;
+  border-radius: 15%;
+  transform: rotate(40deg);
+  background: linear-gradient(transparent 0 60%, #4E97FE 61% 70%, transparent 71%)
+}
+.clear-icon::before {
+  content: "";
+  position: absolute;
+  left: 105%;
+  top: 55%;
+  height: 8%;
+  background-color: #4E97FE;
+  border-radius: 15%;
+  width: 170%;
+  transform: rotate(139deg);
+}
+.clear-icon::after {
+  content: "";
+  position: absolute;
+  left: 72%;
+  top: 87%;
+  width: 70%;
+  height: 25%;
+  transform: rotate(139deg);
+  background-color: #222;
+  border-color: #222;
+  border-style: solid;
+  border-width: 0 0 0.125rem 0;
+  background-color: var(--btn-secondary-bg-color);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #222;

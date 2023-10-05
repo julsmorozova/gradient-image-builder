@@ -54,10 +54,6 @@ main {
   overflow-y: scroll;
 }
 
-.panel-container:first-of-type > div:first-child {
-  margin-top: 0.5rem;
-}
-
 .panel-container:first-of-type > button:last-child {
   margin-bottom: 1.5rem;
 }
@@ -73,8 +69,6 @@ main {
   }
   .panel-container:has(.preview-container) {
     flex: unset;
-    position: sticky;
-    top: 0;
     padding: 1rem 0;
   }
   .text-block-wrapper {
