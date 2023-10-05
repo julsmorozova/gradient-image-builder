@@ -6,13 +6,14 @@ type GradientInputProps = {
     unit?: 'rem' | 'px' | '%';
     isValueRelative?: boolean;
     maxValue?: number;
-    backgroundPropName: keyof Pick<BackgroundInput, 'value' | 'x'| 'y'| 'h'| 'w'>;
+    backgroundPropName: keyof Pick<BackgroundInput, 'value' | 'name' | 'x'| 'y'| 'h'| 'w'>;
     backgroundId: BackgroundInput['id'];
     isNegativeValAllowed?: boolean;
+    isTextarea?: boolean;
 }
 
 export default function GradientInput ( props: GradientInputProps ) {
-    const { isStringInput, unit, isValueRelative, maxValue, backgroundPropName, backgroundId, isNegativeValAllowed } = props;
+    const { isStringInput, unit, isValueRelative, maxValue, backgroundPropName, backgroundId, isNegativeValAllowed, isTextarea } = props;
     const editBackgroundValue = useGradientStore((state) => state.editBackgroundValue);
     const backgroundValue = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.[backgroundPropName]);
 
@@ -23,14 +24,22 @@ export default function GradientInput ( props: GradientInputProps ) {
     return (
         isStringInput ? 
             <div className="input-decoration">
-                <textarea 
-                    data-gramm="false" 
-                    data-gramm_editor="false" 
-                    data-enable-grammarly="false" 
-                    onChange={(e) => editBackgroundValue(backgroundId, 'value', e.currentTarget.value)}
-                    value={backgroundValue} 
-                    spellCheck="false"
-                />
+                {isTextarea ? 
+                    <textarea 
+                        data-gramm="false" 
+                        data-gramm_editor="false" 
+                        data-enable-grammarly="false" 
+                        onChange={(e) => editBackgroundValue(backgroundId, 'value', e.currentTarget.value)}
+                        value={backgroundValue} 
+                        spellCheck="false"
+                    /> :
+                    <input 
+                        type="text"
+                        spellCheck="false"
+                        onChange={(e) => editBackgroundValue(backgroundId, 'name', e.currentTarget.value) }
+                        value={backgroundValue}
+                    />
+                }
             </div> :
             (
                 <div className="code-input-input-wrapper-col">

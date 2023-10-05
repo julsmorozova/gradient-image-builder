@@ -44,18 +44,27 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                     <>
                     <div className="bg-value-container row">
                         <div className="code-input-label">
-                        <ColorsThumbnail id={id}/>
+                            <ColorsThumbnail id={id}/>
+                        </div>
+                        <div className="code-input-input-wrapper gradient-identifier">
+                            <GradientInput
+                                key={`${id}-gradient-name`}
+                                isStringInput
+                                backgroundId={id}
+                                backgroundPropName='name'
+                                isValueRelative
+                            />
                         </div>
                     </div>
                     <div className="bg-value-container row">
                         <div className="code-input-label">
-                            <div>gradient: </div>
                             <div className={classnames("default-data-flag", {show: isDefaultData})}>default data</div>
                         </div>
                         <div className="code-input-input-wrapper">
                             <GradientInput
                                 key={`${id}-value`}
                                 isStringInput
+                                isTextarea
                                 backgroundId={id}
                                 backgroundPropName='value'
                                 isValueRelative

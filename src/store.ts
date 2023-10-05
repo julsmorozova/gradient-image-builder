@@ -6,6 +6,7 @@ export type BackgroundInputNumber = undefined | number;
 
 export type BackgroundInput = { 
     id: string;
+    name?: string;
     isDefaultData: boolean;
     isAccordionOpen?: boolean;
     value?: string;
@@ -22,6 +23,7 @@ export type GradientObjectState = {
     height: number;
     isBorderShown: boolean;
     borderWidth: number;
+    counter: number;
     backgroundInputs: BackgroundInput[];
 }
 
@@ -44,8 +46,10 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     height: 20,
     isBorderShown: true,
     borderWidth: 1,
+    counter: 1,
     backgroundInputs: [{
-        id: new Date().valueOf().toString(), 
+        id: new Date().valueOf().toString(),
+        name: 'layer-1', 
         isDefaultData: true, 
         isAccordionOpen: true, 
         value: gradientDefaultValue1, 
@@ -55,14 +59,16 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
         h: 20, 
         repeat: 'no-repeat',
     }],
-    cloneLayer: (id) => set({ ...get(), backgroundInputs: [...handleClone(get().backgroundInputs, id)]}),
+    cloneLayer: (id) => set({ ...get(), counter: get().counter + 1, backgroundInputs: [...handleClone(get().backgroundInputs, id)]}),
     updateBackgroundInputs: (incomingState) => set ({ ...get(), backgroundInputs: [...incomingState] }),
     editGradientObjectValue: (incomingState) => set({ ...get(), ...incomingState }),
     addBackgroundLayer: () => set({ 
-        ...get(), 
+        ...get(),
+        counter: get().counter + 1, 
         backgroundInputs: [ 
             ...get().backgroundInputs, { 
-                id: new Date().valueOf().toString(), 
+                id: new Date().valueOf().toString(),
+                name: `layer-${get().counter + 1}`,  
                 isDefaultData: true, 
                 isAccordionOpen: true, 
                 value: gradientDefaultValue, 
