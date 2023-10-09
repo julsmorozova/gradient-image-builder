@@ -1,4 +1,4 @@
-.code-input-container {
+.background-block-container {
     padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
 }
@@ -35,35 +35,35 @@
     text-align: center;
 }
 
-.code-input-input-wrapper {
+.bg-block-input-wrapper {
     display: flex;
     align-items: start;
     width: 80%;
     justify-content: flex-end;
 }
 
-.code-input-input-wrapper.gradient-identifier {
+.bg-block-input-wrapper.gradient-identifier {
     display: grid;
     grid-template-columns: 1fr 2rem;
 }
 
-.code-input-input-wrapper.gradient-identifier input {
+.bg-block-input-wrapper.gradient-identifier input {
     width: 100%;
     text-align: end;
     font-weight: 600;
 }
 
-.code-input-input-wrapper input {
+.bg-block-input-wrapper input {
     width: 2.5rem;
     font-size: 0.875rem;
     margin-right: 0;
 }
 
-.code-input-input-wrapper textarea {
+.bg-block-input-wrapper textarea {
     margin-right: 0;
 }
 
-.code-input-wrapper.btn-wrapper {
+.btn-wrapper {
     width: 2rem;
 }
 
@@ -95,12 +95,12 @@
     grid-column: 2/4;
 }
 
-.row.row-secondary .code-input-input-wrapper  {
+.row.row-secondary .bg-block-input-wrapper  {
     grid-column: 4/7;
     width: unset;
 }
 
-.code-input-input-wrapper-col {
+.bg-block-input-wrapper-col {
     display: grid;
     align-items: baseline;
     font-size: 0.875rem;
@@ -109,33 +109,33 @@
     position: relative;
 }
 
-.code-input-input-wrapper-col input {
-    width: 3rem;
+.bg-block-input-wrapper-col input {
+    width: 3.5rem;
     margin-right: 0;
 }
 
-.code-input-input-wrapper-col:last-child {
+.bg-block-input-wrapper-col:last-child {
     grid-column: 5/7;
 }
 
-.code-input-input-wrapper-col:last-child input {
+.bg-block-input-wrapper-col:last-child input {
     grid-column: 5/6;
 }
 
-.code-input-input-wrapper-col:last-child .number-input-unit {
+.bg-block-input-wrapper-col:last-child .number-input-unit {
     grid-column: 6/6;
 }
 
-.code-input-input-wrapper-col .label {
+.bg-block-input-wrapper-col .label {
     font-weight: 600;
     margin-right: 0.5rem;
 }
 
 @media (min-width: 770px) and (max-width: 1030px) {
-    .code-input-input-wrapper-col input {
+    .bg-block-input-wrapper-col input {
         width: 2rem;
     }
-    .code-input-input-wrapper-col  {
+    .bg-block-input-wrapper-col  {
         font-size: 0.75rem;
     }
 }

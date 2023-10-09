@@ -1,5 +1,4 @@
 import { useGradientStore, GradientObjectState } from './store';
-import { editDisplayStylePropName } from './tools';
 import "./NumberInput.css";
 
 type NumberInputProps = {
@@ -15,20 +14,18 @@ export default function NumberInput ( props: NumberInputProps ) {
     const editValue = useGradientStore((state) => state.editGradientObjectValue);
     const inputValue = useGradientStore((state) => state[inputName]);
     return (
-        <div className="number-input-container">
-            <div className="number-input-label">{editDisplayStylePropName(inputName)}: </div>
-            <div className="number-input-input-wrapper">
-                <div className="input-decoration">
-                    <input 
-                        type="number"
-                        max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
-                        min={isNegativeValAllowed ? undefined : 0}
-                        onChange={(e) => editValue({ [inputName]: Number(e.currentTarget.value) })}
-                        value={inputValue} 
-                    /> 
-                </div>
-                <span className="number-input-unit">{unit}</span>
+        <>
+            <div className="input-decoration">
+                <input 
+                    className="number-input"
+                    type="number"
+                    max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
+                    min={isNegativeValAllowed ? undefined : 0}
+                    onChange={(e) => editValue({ [inputName]: Number(e.currentTarget.value) })}
+                    value={inputValue} 
+                /> 
             </div>
-        </div>
+            <span className="number-input-unit">{unit}</span>
+        </>
     );
 }

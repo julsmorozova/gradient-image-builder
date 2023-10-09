@@ -42,7 +42,7 @@ export default function GradientInput ( props: GradientInputProps ) {
                 }
             </div> :
             (
-                <div className="code-input-input-wrapper-col">
+                <div className="bg-block-input-wrapper-col">
                     <div className="label">{handleInputName(backgroundPropName)}</div>
                     <div className="input-decoration">
                         <input 

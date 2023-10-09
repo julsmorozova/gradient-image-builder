@@ -1,36 +1,6 @@
-.number-input-container {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-    display: grid;
-    grid-template-columns: 5fr 4fr 5fr 7fr 7fr 2rem 2rem;
-    grid-template-rows: auto;
-    align-items: self-start;
-}
-
-.number-input-label {
-    display: flex;
-    flex-wrap: wrap;
-    font-weight: 600;
-    grid-column: 1 / 3;
-    padding-left: 1rem;
-}
-
-.number-input-input-wrapper {
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-end;
-    grid-column: 5 / 7;
-}
-
-.number-input-input-wrapper input {
+.number-input {
     width: 3rem;
     margin-right: 0;
-}
-
-.number-input-input-wrapper:has(input[type="checkbox"]) {
-    grid-column: 5/6;
-    justify-self: end;
-    margin-right: 0.25rem;
 }
 
 .number-input-unit {
@@ -40,7 +10,7 @@
 
 
 @media (min-width: 820px) and (max-width: 1030px) {
-    .number-input-input-wrapper input {
+    .number-input {
         width: 2rem;
     }
 }

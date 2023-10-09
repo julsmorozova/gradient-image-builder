@@ -3,8 +3,8 @@ import BackgroundBlock from "./BackgroundBlock";
 import NumberInput from './NumberInput';
 import { useRef } from 'react';
 import "./BuilderPanel.css";
-import "./NumberInput.css";
 import { Tooltip } from 'react-tooltip';
+import { editDisplayStylePropName } from './tools';
 
 export default function BuilderPanel() {
     const backgroundInputs = useGradientStore((state) => state.backgroundInputs);
@@ -52,7 +52,7 @@ export default function BuilderPanel() {
     };
 
     return (
-        <div className="panel-container">
+        <div className="panel-container builder-panel">
             <div className="control-panel">
                 <button
                     id="clear-data-btn" 
@@ -65,9 +65,19 @@ export default function BuilderPanel() {
                 </button>
                 <Tooltip id="clear-data" />
             </div>
-            <NumberInput key="number-input-width" inputName="width" unit="rem" maxValue={50} />
-            <NumberInput key="number-input-height" inputName="height" unit="rem" maxValue={34} />
-            <div className="number-input-container">
+            <div className="biulder-panel-row number-input-container">
+                <div className="number-input-label">{editDisplayStylePropName('width')}: </div>
+                <div className="number-input-input-wrapper">
+                    <NumberInput key="number-input-width" inputName="width" unit="rem" maxValue={50} />
+                </div>
+            </div>
+            <div className="biulder-panel-row number-input-container">
+                <div className="number-input-label">{editDisplayStylePropName('height')}: </div>
+                <div className="number-input-input-wrapper">
+                    <NumberInput key="number-input-height" inputName="height" unit="rem" maxValue={34} />
+                </div>
+            </div>
+            <div className="biulder-panel-row number-input-container border-row">
                 <div className="number-input-label">border visible: </div>
                 <div className="number-input-input-wrapper">
                     <input 
@@ -79,8 +89,11 @@ export default function BuilderPanel() {
                         checked={!!isBorderShown} 
                     />
                 </div>
+                <div className="number-input-label border-width">{editDisplayStylePropName('width')}: </div>
+                <div className="number-input-input-wrapper">
+                    <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" maxValue={10} />
+                </div>
             </div>
-            <NumberInput key="number-input-border-width" inputName="borderWidth" unit="px" maxValue={10} />
             {renderBackgroundInputs(backgroundInputs)}
             <button 
                 className="btn btn-primary add-bg-layer-btn"

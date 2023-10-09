@@ -37,7 +37,7 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
     const isDefaultData = useGradientStore((state) => state.backgroundInputs.find(i => i.id === id)?.isDefaultData);
 
     return (
-        <div className="code-input-container">
+        <div className="background-block-container">
             <Accordion 
                 backgroundId={id}
                 headerContent={(
@@ -46,27 +46,12 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                         <div className="code-input-label">
                             <ColorsThumbnail id={id}/>
                         </div>
-                        <div className="code-input-input-wrapper gradient-identifier">
+                        <div className="bg-block-input-wrapper gradient-identifier">
                             <GradientInput
                                 key={`${id}-gradient-name`}
                                 isStringInput
                                 backgroundId={id}
                                 backgroundPropName='name'
-                                isValueRelative
-                            />
-                        </div>
-                    </div>
-                    <div className="bg-value-container row">
-                        <div className="code-input-label">
-                            <div className={classnames("default-data-flag", {show: isDefaultData})}>default data</div>
-                        </div>
-                        <div className="code-input-input-wrapper">
-                            <GradientInput
-                                key={`${id}-value`}
-                                isStringInput
-                                isTextarea
-                                backgroundId={id}
-                                backgroundPropName='value'
                                 isValueRelative
                             />
                             <div className="code-input-wrapper btn-wrapper">
@@ -80,6 +65,23 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                                     x
                                 </button>
                                 {backgroundLayersLength > 1 && <Tooltip id="delete-layer" />}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-value-container row">
+                        <div className="code-input-label">
+                            <div className={classnames("default-data-flag", {show: isDefaultData})}>default data</div>
+                        </div>
+                        <div className="bg-block-input-wrapper">
+                            <GradientInput
+                                key={`${id}-value`}
+                                isStringInput
+                                isTextarea
+                                backgroundId={id}
+                                backgroundPropName='value'
+                                isValueRelative
+                            />
+                            <div className="btn-wrapper">
                                 <button 
                                     className="btn btn-secondary duplicate-bg-layer-btn" 
                                     onClick={() => cloneLayer(id)}

@@ -31,14 +31,3 @@
     radial-gradient(circle at 100% 50%, transparent 20%, #76ecd4 20% 35%, transparent 35%) 0% 92.5%/ 20% 20% repeat-x,
     radial-gradient(circle at 0% 50%, transparent 20%, #76ecd4 20% 35%, transparent 35%) 0% 108%/ 20% 20% repeat-x;
 }
-
-.test-2 {
-    width: 24rem;
-    height: 24rem;
-    border: 1px solid #b1b1b1;
-    background: radial-gradient(50% 50% at 50% 50%, #eee 0% 72%, #000 72.5% 80%, transparent 80.5% 100%) 81% 32%/ 12% 12% no-repeat,
-    radial-gradient(50% 50% at 50% 50%, #ccc 49.5%, transparent 50%) 85.5% 31%/ 19% 20% no-repeat,
-    radial-gradient(50% 50% at 50% 50%, #cdebf8 0% 75%, #000 75.5% 80%, transparent 80.5% 100%) 84% 30%/ 20% 20% no-repeat,
-    radial-gradient(100% 100% at 50% 50%, #cdebf8 49.5%, transparent 50%) 84% 30%/ 20% 20% no-repeat,
-    radial-gradient(100% 100% at 50% 50%, #ccc 49.5%, transparent 50%) 86% 32%/ 16% 17% no-repeat;
-}
