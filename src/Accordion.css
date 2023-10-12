@@ -3,6 +3,21 @@
     grid-template-columns: 5fr 4fr 5fr 7fr 7fr 2fr 2rem 0.75rem;
     grid-template-rows: auto;
     padding: 0 0 0.5rem;
+    position: relative;
+}
+
+.opacity-overlay {
+    display: none;
+}
+
+.opacity-overlay.show-overlay {
+    opacity: 0.8;
+    position: absolute;
+    height: calc(100% + 0.5rem);
+    width: 84%;
+    display: flex;
+    top: -0.5rem;
+    background: repeating-linear-gradient(135deg, #e5e5e5, #e5e5e5 5%, #ccc 6%, #e5e5e5 6%);
 }
 
 .acc-header-content {
@@ -12,6 +27,10 @@
 .accordion-body {
     background-color: #fff;
     padding: 0.5rem 0;
+}
+
+.accordion-body.hidden {
+    opacity: 0.2;
 }
 
 .accordion-body.collapsed {

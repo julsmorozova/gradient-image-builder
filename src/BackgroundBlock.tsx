@@ -34,12 +34,15 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
     const backgroundLayersLength = useGradientStore((state) => state.backgroundInputs.length);
     const deleteBackgroundLayer = useGradientStore((state) => state.deleteBackgroundLayer);
     const cloneLayer = useGradientStore((state) => state.cloneLayer);
+    const toggleVisibility = useGradientStore((state) => state.toggleLayerVisibility);
     const isDefaultData = useGradientStore((state) => state.backgroundInputs.find(i => i.id === id)?.isDefaultData);
+    const isLayerHidden = useGradientStore((state) => state.backgroundInputs.find(i => i.id === id)?.isHidden);
 
     return (
-        <div className="background-block-container">
+        <div className={classnames("background-block-container", {hidden: isLayerHidden})}>
             <Accordion 
                 backgroundId={id}
+                isLayerHidden={isLayerHidden}
                 headerContent={(
                     <>
                     <div className="bg-value-container row">
@@ -92,6 +95,15 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                                     <div className="copy-icon" />
                                 </button>
                                 <Tooltip id="clone-layer" />
+                                <button 
+                                    className="btn btn-secondary toggle-visibility-btn" 
+                                    onClick={() => toggleVisibility(id)}
+                                    data-tooltip-id="toggle-layer-visibility" 
+                                    data-tooltip-content={isLayerHidden ? "Show layer" : "Hide layer"}
+                                >
+                                    <div className={classnames("toggle-visibility-icon", {"show": isLayerHidden}, {"hide": !isLayerHidden})} />
+                                </button>
+                                <Tooltip id="toggle-layer-visibility" />
                             </div>
                         </div>
                     </div>

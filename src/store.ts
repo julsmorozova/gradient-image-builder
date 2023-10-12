@@ -9,13 +9,13 @@ export type BackgroundInput = {
     name?: string;
     isDefaultData: boolean;
     isAccordionOpen?: boolean;
+    isHidden?: boolean;
     value?: string;
     x?: number;
     y?: BackgroundInputNumber;
     w?: BackgroundInputNumber;
     h?: BackgroundInputNumber;
     repeat?: string;
-    // repeat?: 'repeat-x' | 'repeat-y' | 'no-repeat';
 }
 
 export type GradientObjectState = {
@@ -36,6 +36,7 @@ type GradientObjectAction = {
     editBackgroundValue: (id: BackgroundInput['id'], valueName: keyof BackgroundInput, value: BackgroundInput['value'] | BackgroundInputNumber | BackgroundInput['isAccordionOpen']) => void,
     editCheckboxValue: () => void,
     toggleAccordion: (id: BackgroundInput['id']) => void,
+    toggleLayerVisibility: (id: BackgroundInput['id']) => void,
 }
 
 const gradientDefaultValue = "linear-gradient(#fff 0 30%, #76ecd4 30% 34%, #fff 34% 49%, #76ecd4 49% 53%, #fff 53%)";
@@ -51,7 +52,8 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
         id: new Date().valueOf().toString(),
         name: 'layer-1', 
         isDefaultData: true, 
-        isAccordionOpen: true, 
+        isAccordionOpen: true,
+        isHidden: false, 
         value: gradientDefaultValue1, 
         x: 30, 
         y: 30, 
@@ -71,6 +73,7 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
                 name: `layer-${get().counter + 1}`,  
                 isDefaultData: true, 
                 isAccordionOpen: true, 
+                isHidden: false,
                 value: gradientDefaultValue, 
                 x: 0, 
                 y: 0, 
@@ -83,7 +86,6 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     deleteBackgroundLayer: (id) => set({ ...get(), backgroundInputs: get().backgroundInputs.filter(item => item.id !== id)}),
     editBackgroundValue: (id, valueName, value) => set({...get(), backgroundInputs: get().backgroundInputs.map(i => {
         if (i.id === id) {
-            console.log("editing id:", id)
             return { ...i, isDefaultData: false, [valueName]: value};
         } else {
             return i;
@@ -93,6 +95,13 @@ export const useGradientStore = create<GradientObjectState & GradientObjectActio
     toggleAccordion: (id) => set({ ...get(), backgroundInputs: get().backgroundInputs.map(i => {
         if (i.id === id) {
             return { ...i, isAccordionOpen: !i.isAccordionOpen};
+        } else {
+            return i;
+        }
+    })}),
+    toggleLayerVisibility: (id) => set({ ...get(), backgroundInputs: get().backgroundInputs.map(i => {
+        if (i.id === id) {
+            return { ...i, isHidden: !i.isHidden};
         } else {
             return i;
         }

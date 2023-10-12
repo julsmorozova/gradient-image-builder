@@ -32,7 +32,6 @@ export const parseGradientString = (string: BackgroundInput['value']): Partial<B
         const w = parseInt(strForParsing.substring(strForParsing.indexOf('/') + 1).split(' ').filter(i => i !== '')[0]);
         const h = parseInt(strForParsing.substring(strForParsing.indexOf('/') + 1).split(' ').filter(i => i !== '')[1]);
         const repeat = strForParsing.substring(strForParsing.indexOf('/') + 1).split(' ').filter(i => i !== '')[2];
-        console.log(strForParsing,'x:', x, 'y:', y , 'w:', w, 'h:', h, 'repeat:', repeat);
         return {'x': x as number, 'y': y as number, 'w': w as number, 'h': h as number, 'repeat': repeat};
     } else {
         return null;
@@ -49,7 +48,6 @@ export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id'])
         isAccordionOpen: false,
     };
 
-    console.log("curIndex:", curIndex, "current id: ", id, "copy id: ", copiedItem.id);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return items.toSpliced(curIndex, 0, copiedItem); 

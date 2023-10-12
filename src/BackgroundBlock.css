@@ -1,6 +1,10 @@
 .background-block-container {
-    padding: 0.5rem 0;
+    padding: 0.5rem 0 0;
     border-bottom: 1px solid #eee;
+}
+
+.background-block-container.hidden {
+    background-color: #e5e5e5;
 }
 
 .bg-value-container.row {

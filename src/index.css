@@ -149,6 +149,7 @@ button.btn {
   transition: all 250ms ease-in-out, transform 150ms ease;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
 }
 
 button.btn:hover,
@@ -262,6 +263,50 @@ button.btn:disabled:focus {
   border-style: solid;
   border-width: 0 0 0.125rem 0;
   background-color: var(--btn-secondary-bg-color);
+}
+
+.btn.btn-secondary.toggle-visibility-btn {
+  padding: 0.3125rem 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+.toggle-visibility-icon {
+  grid-column: 3/3;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 0.125rem solid #222;
+  border-radius: 80% 0;
+  transform: rotate(45deg);
+}
+
+.toggle-visibility-icon::before {
+  content: "";
+  position: absolute;
+  justify-self: center;
+  align-self: center;
+  width: 50%;
+  height: 50%;
+  border: 0.125rem solid #222;
+  border-radius: 50%;
+}
+
+.toggle-visibility-icon.hide::after {
+  content: "";
+  position: absolute;
+  align-self: center;
+  justify-self: center;
+  width: 0.125rem;
+  height: 170%;
+  background-color: #222;
+  transform: rotate(180deg);
+}
+
+.toggle-visibility-icon.show::after {
+  display: none;
 }
 
 @media (prefers-color-scheme: light) {
