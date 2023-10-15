@@ -27,6 +27,21 @@ const repeatOptions = [
         name: 'repeatY',
         value: 'repeat-y',
     },
+    {
+        id: 3,
+        name: 'repeat',
+        value: 'repeat',
+    },
+    {
+        id: 4,
+        name: 'space',
+        value: 'space',
+    },
+    {
+        id: 5,
+        name: 'round',
+        value: 'round',
+    },
 ];
 
 export default function BackgroundBlock(props: BackgroundBlockProps) {
