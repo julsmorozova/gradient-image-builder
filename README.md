@@ -5,7 +5,7 @@ Those of you who love drawing images with CSS gradients, know how difficult it i
 
 <img width="1433" alt="image" src="https://github.com/julsmorozova/gradient-image-builder/assets/14838702/e4d0a023-d8fa-49e8-95d4-19d626f52ba9">
 
-<br>Give it a try. :blush:
+<br>Give it a try. :blush: https://julsmorozova.github.io/gradient-image-builder/
 
 ## Installation
 ```shell
