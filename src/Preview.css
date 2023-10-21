@@ -1,11 +1,10 @@
 .preview-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 1rem 0;
-    width: 100%;
+    flex-basis: auto;
     min-height: 70%;
-    height: fit-content;
+    overflow-y: scroll;
     background-color: #fff;
     border: 1px solid #eee;
 }

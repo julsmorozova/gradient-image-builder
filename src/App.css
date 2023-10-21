@@ -33,7 +33,7 @@ main {
   display: flex;
   width: 100%;
   /* subtracting header height */
-  height: calc(100% - 4.5rem); 
+  height: calc(100% - 4.35rem); 
 }
 
 .panel-container {

@@ -2,6 +2,7 @@
     display: flex;
     height: 25%;
     overflow-y: scroll;
+    flex-basis: auto;
 }
 
 .outcome-text-wrapper {

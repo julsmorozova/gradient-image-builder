@@ -18,9 +18,11 @@
 }
 
 .btn.add-bg-layer-btn {
-    margin: 0.5rem 1rem;
+    margin: 1rem;
     padding: 0.625rem 1rem;
     border: none;
+    width: 75%;
+    max-width: 27rem;
 }
 
 .btn.add-bg-layer-btn:hover {
@@ -71,6 +73,11 @@
     grid-column: 3/3;
     justify-self: start;
     margin-right: 0.25rem;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
 }
 
  @keyframes slide {

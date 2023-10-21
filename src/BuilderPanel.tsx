@@ -95,12 +95,14 @@ export default function BuilderPanel() {
                 </div>
             </div>
             {renderBackgroundInputs(backgroundInputs)}
-            <button 
-                className="btn btn-primary add-bg-layer-btn"
-                onClick={addBackgroundLayer}
-            >
-                add layer
-            </button>
+            <div className="button-wrapper">
+                <button 
+                    className="btn btn-primary add-bg-layer-btn"
+                    onClick={addBackgroundLayer}
+                >
+                    add layer
+                </button>
+            </div>
         </div>
     );
 }

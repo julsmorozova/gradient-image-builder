@@ -13,6 +13,7 @@ export default function Preview() {
     const borderWidth = useGradientStore((state) => state.borderWidth);
 
     const styleBlock = {
+        margin: 'auto 0',
         width: width + 'rem',
         height: height + 'rem',
         border: isBorderShown ? borderWidth + 'px solid #b1b1b1' : 'none',

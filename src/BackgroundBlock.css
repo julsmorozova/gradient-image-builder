@@ -42,7 +42,7 @@
 .bg-block-input-wrapper {
     display: flex;
     align-items: start;
-    width: 80%;
+    width: calc(100% - 15% - 2rem); /* subtracting label cell width and icon cell width */
     justify-content: flex-end;
 }
 
