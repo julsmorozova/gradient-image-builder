@@ -225,7 +225,7 @@ button.btn:disabled:focus {
   content: "";
   height: 0.5rem;
   width: 0.5rem;
-  background-color: #fff;
+  background-color: var(--btn-secondary-bg-color);
   border: 2px solid #222;
   border-radius: 2px;
 }

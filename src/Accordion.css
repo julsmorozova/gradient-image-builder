@@ -14,7 +14,7 @@
     opacity: 0.8;
     position: absolute;
     height: calc(100% + 0.5rem);
-    width: 84%;
+    width: calc(100% - 4.75rem);
     display: flex;
     top: -0.5rem;
     background: repeating-linear-gradient(135deg, #e5e5e5, #e5e5e5 5%, #ccc 6%, #e5e5e5 6%);
