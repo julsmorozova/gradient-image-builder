@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { BackgroundInput, useGradientStore } from "./store";
 import "./BackgroundBlockDropdown.css";
 
@@ -17,10 +18,16 @@ export default function BackgroundBlockDropdown (props: BackgroundBlockDropdownP
     const { items, backgroundId, backgroundPropName } = props;
     const editBackgroundValue = useGradientStore((state) => state.editBackgroundValue);
     const backgroundValue = useGradientStore((state) => state.backgroundInputs.find(i => i.id === backgroundId)?.[backgroundPropName]);
+    const id = useId();
+    
     return (
         <div className="background-dropdown">
             <div className="input-decoration">
-            <select value={backgroundValue} onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value )}>
+            <select 
+                id={id + '-background-dropdown'} 
+                value={backgroundValue} 
+                onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value )}
+            >
                 {items.map(item => (
                     <option key={item.name} className="background-dropdown">{item.value}</option>
                 ))}

@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useGradientStore, BackgroundInput } from './store';
 import "./NumberInput.css";
 
@@ -21,11 +22,14 @@ export default function GradientInput ( props: GradientInputProps ) {
         return name === 'value' ? 'gradient' : name;
     };
 
+    const id = useId();
+
     return (
         isStringInput ? 
             <div className="input-decoration">
                 {isTextarea ? 
-                    <textarea 
+                    <textarea
+                        id={id + '-gradient-textarea'} 
                         data-gramm="false" 
                         data-gramm_editor="false" 
                         data-enable-grammarly="false" 
@@ -34,6 +38,7 @@ export default function GradientInput ( props: GradientInputProps ) {
                         spellCheck="false"
                     /> :
                     <input 
+                        id={id + '-gradient-input-name'} 
                         type="text"
                         spellCheck="false"
                         onChange={(e) => editBackgroundValue(backgroundId, 'name', e.currentTarget.value) }
@@ -46,6 +51,7 @@ export default function GradientInput ( props: GradientInputProps ) {
                     <div className="label">{handleInputName(backgroundPropName)}</div>
                     <div className="input-decoration">
                         <input 
+                            id={id + '-gradient-input-number'} 
                             type="number"
                             max={maxValue}
                             onChange={(e) => editBackgroundValue(backgroundId, backgroundPropName, e.currentTarget.value) }

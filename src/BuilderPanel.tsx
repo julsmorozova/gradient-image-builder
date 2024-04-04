@@ -1,7 +1,7 @@
 import { BackgroundInput, useGradientStore } from './store';
 import BackgroundBlock from "./BackgroundBlock";
 import NumberInput from './NumberInput';
-import { useRef } from 'react';
+import { useRef, useId } from 'react';
 import "./BuilderPanel.css";
 import { Tooltip } from 'react-tooltip';
 import { editDisplayStylePropName } from './tools';
@@ -12,6 +12,7 @@ export default function BuilderPanel() {
     const editCheckboxValue = useGradientStore((state) => state.editCheckboxValue);
     const addBackgroundLayer = useGradientStore((state) => state.addBackgroundLayer);
     const updateBackgroundInputs = useGradientStore((state) => state.updateBackgroundInputs);
+    const id = useId();
 
     const dragItem = useRef<number | null>(null);
     const dragOverItem = useRef<number | null>(null);
@@ -80,7 +81,8 @@ export default function BuilderPanel() {
             <div className="biulder-panel-row number-input-container border-row">
                 <div className="number-input-label">border visible: </div>
                 <div className="number-input-input-wrapper">
-                    <input 
+                    <input
+                        id={id + '-border-shown-checkbox'}  
                         type="checkbox"
                         data-gramm="false" 
                         data-gramm_editor="false" 

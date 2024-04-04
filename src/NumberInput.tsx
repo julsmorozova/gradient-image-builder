@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useGradientStore, GradientObjectState } from './store';
 import "./NumberInput.css";
 
@@ -13,10 +14,13 @@ export default function NumberInput ( props: NumberInputProps ) {
     const { inputName, unit, isValueRelative, maxValue, isNegativeValAllowed } = props;
     const editValue = useGradientStore((state) => state.editGradientObjectValue);
     const inputValue = useGradientStore((state) => state[inputName]);
+    const id = useId();
+
     return (
         <>
             <div className="input-decoration">
                 <input 
+                    id={id + '-number-input'} 
                     className="number-input"
                     type="number"
                     max={maxValue ? maxValue : (isValueRelative ? 100 : undefined)}
