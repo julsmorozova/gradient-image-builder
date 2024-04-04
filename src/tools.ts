@@ -45,7 +45,6 @@ export const handleClone = (items: BackgroundInput[], id: BackgroundInput['id'])
         ...items[curIndex], 
         id: new Date().valueOf().toString(),
         isDefaultData: false,
-        isAccordionOpen: false,
     };
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
