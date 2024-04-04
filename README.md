@@ -15,5 +15,5 @@ gradient-image-builder $ npm install
 gradient-image-builder $ npm run build
 gradient-image-builder $ npm run preview
 
-browser: http://localhost:4173
+browser: http://localhost:4173/gradient-image-builder/
 ```
