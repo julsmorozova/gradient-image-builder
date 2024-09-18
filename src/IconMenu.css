@@ -1,0 +1,61 @@
+.icon-menu {
+  position: relative;
+}
+.btn-secondary.icon-menu-button {
+  padding: 0 0.25rem 0.3125rem;
+}
+.icon-menu-dropdown {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  min-width: 12rem;
+  position: absolute;
+  right: 0;
+  top: 1rem;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: 2px 2px 4px #ccc;
+  z-index: 1000;
+  padding: 0.5rem 0;
+  list-style: none;
+}
+.menu-item-wrapper {
+  display: flex;
+}
+.icon-menu-dropdown.collapsed {
+  display: none;
+}
+.icon-menu-dropdown li {
+  display: flex;
+  align-items: center;
+  padding: 0.3125rem 1rem 0.3125rem 1.25rem;
+}
+
+.icon-menu-dropdown li:hover {
+  background-color: var(--btn-secondary-bg-color);
+}
+
+.icon-menu-dropdown li span {
+  margin-inline-end: 0.5rem;
+}
+
+li .check-icon {
+  position: absolute;
+  left: 0.25rem;
+}
+
+li .check-icon::before {
+  --btn-primary-bg-color: var(--accent-color);
+}
+
+#btn-clear {
+  position: absolute;
+  right: 30px;
+  font-size: 1rem;
+}
+
+#btn-delete {
+  position: absolute;
+  right: 5px;
+}

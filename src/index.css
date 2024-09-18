@@ -13,11 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --error-color: #B8151C;
+  --error-color: #b8151c;
   --btn-delete-font-color: var(--error-color);
   --btn-primary-bg-color: #222;
   --btn-primary-font-color: #fff;
   --btn-secondary-bg-color: #f3f3f3;
+  --accent-color: #4e97fe;
 }
 
 #root {
@@ -48,7 +49,9 @@ a {
   text-decoration: inherit;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
   margin-right: 0.25rem;
@@ -66,7 +69,9 @@ textarea {
   min-height: 4.5em;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border: none;
 }
@@ -85,13 +90,13 @@ input:focus, textarea:focus, select:focus {
   width: 100%;
 }
 
-.input-decoration:has(select:focus), 
+.input-decoration:has(select:focus),
 .input-decoration:has(textarea:focus),
 .input-decoration:has(input:focus) {
-  border-color: #1fabd0;
+  border-color: var(--accent-color);
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   all: unset;
   -webkit-appearance: none;
   appearance: none;
@@ -107,7 +112,16 @@ input[type=checkbox] {
   place-content: center;
 }
 
-input[type=checkbox]::before {
+.check-icon {
+  width: 1rem;
+  height: 1rem;
+  position: relative;
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before,
+.check-icon::before {
   content: "";
   width: 0.75rem;
   height: 0.75rem;
@@ -117,19 +131,20 @@ input[type=checkbox]::before {
   transform-origin: bottom left;
   clip-path: polygon(20% 44%, 0% 65%, 42% 105%, 105% 0%, 65% 20%, 43% 65%);
   /* Windows high contrast mode */
-  background-color: CanvasText; 
+  background-color: CanvasText;
 }
 
-input[type=checkbox]:focus {
+input[type="checkbox"]:focus {
   outline: 0.125rem solid var(--btn-primary-bg-color);
   outline-offset: 0.125rem;
 }
 
-input[type=checkbox]:checked::before {
+input[type="checkbox"]:checked::before,
+.check-icon::before {
   transform: scale(1);
 }
 
-input[type=checkbox]:disabled {
+input[type="checkbox"]:disabled {
   cursor: not-allowed;
   filter: opacity(40%);
 }
@@ -158,7 +173,7 @@ button.btn:focus {
 }
 
 button.btn:focus {
-  outline: 2px solid #fff; 
+  outline: 2px solid #fff;
   outline-offset: -0.25rem;
 }
 
@@ -172,7 +187,7 @@ button.btn-secondary {
 }
 
 button.btn-secondary:hover,
-button.btn-secondary:focus  {
+button.btn-secondary:focus {
   border-color: var(--btn-primary-bg-color);
 }
 
@@ -186,7 +201,7 @@ button.btn-delete {
 }
 
 button.btn-delete:hover,
-button.btn-delete:focus  {
+button.btn-delete:focus {
   border-color: var(--btn-delete-font-color);
 }
 
@@ -231,13 +246,16 @@ button.btn:disabled:focus {
 }
 
 .clear-icon {
-  grid-column: 2/2;
   width: 0.5rem;
   height: 1rem;
   border: 0.125rem solid #222;
   border-radius: 15%;
   transform: rotate(40deg);
-  background: linear-gradient(transparent 0 60%, #4E97FE 61% 70%, transparent 71%)
+  background: linear-gradient(
+    transparent 0 60%,
+    var(--accent-color) 61% 70%,
+    transparent 71%
+  );
 }
 .clear-icon::before {
   content: "";
@@ -245,7 +263,7 @@ button.btn:disabled:focus {
   left: 105%;
   top: 55%;
   height: 8%;
-  background-color: #4E97FE;
+  background-color: var(--accent-color);
   border-radius: 15%;
   width: 170%;
   transform: rotate(139deg);
@@ -263,6 +281,126 @@ button.btn:disabled:focus {
   border-style: solid;
   border-width: 0 0 0.125rem 0;
   background-color: var(--btn-secondary-bg-color);
+}
+
+.folder-icon {
+  display: block;
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  --icon-color: #222;
+  background: linear-gradient(
+        var(--icon-color) 18%,
+        white 18.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      49% 100%/ 80% 60% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 20%,
+        white 20.5% 79.5%,
+        var(--icon-color) 80%
+      )
+      47% 100%/ 100% 60% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 20%,
+        white 20.5% 79.5%,
+        var(--icon-color) 80%
+      )
+      0% 57%/ 45% 57% no-repeat,
+    linear-gradient(
+        var(--icon-color) 18%,
+        white 18.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      0% 63.25%/ 45% 75% no-repeat,
+    linear-gradient(
+        var(--icon-color) 14%,
+        white 14.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      47% 100%/ 80% 77% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 11%,
+        white 12% 79.5%,
+        var(--icon-color) 80%
+      )
+      47% 100%/ 100% 77% no-repeat;
+}
+
+.no-groups-icon {
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: linear-gradient(
+        140deg,
+        transparent 60%,
+        #4e97fe 60.25% 70.5%,
+        transparent 70.75%
+      )
+      0% 100%/ 100% 110% no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 51% 100%/ 80% 60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 47% 100%/ 100%
+      60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 0% 57%/ 45% 57%
+      no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 0% 63.25%/ 45% 75% no-repeat,
+    linear-gradient(#222 14%, white 14.5% 81.5%, #222 82%) 47% 100%/ 80% 77% no-repeat,
+    linear-gradient(90deg, #222 11%, white 12% 79.5%, #222 80%) 47% 100%/ 100% 77%
+      no-repeat;
+}
+
+.move-to-folder-icon {
+  display: block;
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: linear-gradient(-135deg, transparent 49%, var(--accent-color) 50%)
+      66% 64%/ 17% 17% no-repeat,
+    linear-gradient(-45deg, transparent 49%, var(--accent-color) 50%) 66% 84%/ 17%
+      17% no-repeat,
+    linear-gradient(#fff 20%, var(--accent-color) 20.5% 79.5%, #fff 80%) 0% 75%/
+      55% 19% no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 49% 100%/ 80% 60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 47% 100%/ 100%
+      60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 0% 57%/ 45% 57%
+      no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 0% 63.25%/ 45% 75% no-repeat,
+    linear-gradient(#222 14%, white 14.5% 81.5%, #222 82%) 47% 100%/ 80% 77% no-repeat,
+    linear-gradient(90deg, #222 11%, white 12% 79.5%, #222 80%) 47% 100%/ 100% 77%
+      no-repeat;
+}
+
+.add-folder-icon {
+  display: block;
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: linear-gradient(
+        90deg,
+        transparent 20%,
+        #fff 20.5% 79.5%,
+        transparent 80%
+      )
+      78.5% 26%/ 13% 27% no-repeat,
+    linear-gradient(transparent 20%, #fff 20.5% 79.5%, transparent 80%) 84% 30%/
+      27% 12% no-repeat,
+    radial-gradient(var(--accent-color) 49.5%, transparent 50%) 112.5% 8%/ 60% 60%
+      no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 51% 100%/ 80% 60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 47% 100%/ 100%
+      60% no-repeat,
+    linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 0% 57%/ 45% 57%
+      no-repeat,
+    linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 0% 63.25%/ 45% 75% no-repeat,
+    linear-gradient(#222 14%, white 14.5% 81.5%, #222 82%) 47% 100%/ 80% 77% no-repeat,
+    linear-gradient(90deg, #222 11%, white 12% 79.5%, #222 80%) 47% 100%/ 100% 77%
+      no-repeat;
 }
 
 .btn.btn-secondary.toggle-visibility-btn {
@@ -326,7 +464,9 @@ button.btn:disabled:focus {
   #root {
     font-size: 0.75rem;
   }
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     font-size: 0.75rem;
   }
 }
