@@ -1,6 +1,10 @@
 import GradientInput from "./GradientInput";
 import "./BackgroundBlock.css";
-import { useGradientStore } from "./store";
+import {
+  BackgroundGroupType,
+  GradientObjectAction,
+  useGradientStore,
+} from "./store";
 import BackgroundBlockDropdown from "./BackgroundBlockDropdown";
 import Accordion from "./Accordion";
 import { Tooltip } from "react-tooltip";
@@ -10,6 +14,14 @@ import MenuWrapper from "./MenuWrapper";
 
 type BackgroundBlockProps = {
   id: string;
+  groupId?: string;
+  isLayerHidden: boolean;
+  isDefaultData: boolean;
+  isAccordionOpen: boolean;
+  dropdownValue?: string;
+  layerGroups: BackgroundGroupType[];
+  layoutListLength: number;
+  editBackgroundValue: GradientObjectAction["editBackgroundValue"];
 };
 
 const repeatOptions = [
@@ -46,43 +58,30 @@ const repeatOptions = [
 ];
 
 export default function BackgroundBlock(props: BackgroundBlockProps) {
-  const id = props.id;
-  const backgroundLayersLength = useGradientStore(
-    (state) => state.backgroundInputs.length
-  );
-  const deleteBackgroundLayer = useGradientStore(
-    (state) => state.deleteBackgroundLayer
-  );
+  const {
+    id,
+    groupId,
+    isLayerHidden,
+    isDefaultData,
+    isAccordionOpen,
+    dropdownValue,
+    layerGroups,
+    layoutListLength,
+    editBackgroundValue,
+  } = props;
+
+  const deleteBackgroundLayer = useGradientStore((state) => state.deleteLayer);
   const cloneLayer = useGradientStore((state) => state.cloneLayer);
   const toggleVisibility = useGradientStore(
     (state) => state.toggleLayerVisibility
   );
-  const isDefaultData = useGradientStore(
-    (state) => state.backgroundInputs.find((i) => i.id === id)?.isDefaultData
-  );
-  const isLayerHidden = useGradientStore(
-    (state) => state.backgroundInputs.find((i) => i.id === id)?.isHidden
-  );
-  const layerGroups = useGradientStore((state) => state.backgroundGroups);
-  const currentBackgroundGroupId = useGradientStore(
-    (state) =>
-      state.backgroundGroups.find((group) => group.childrenIds?.includes(id))
-        ?.id
-  );
-  const editBackgroundValue = useGradientStore(
-    (state) => state.editBackgroundValue
-  );
   const moveToGroup = useGradientStore((state) => state.moveToGroup);
-  const dropdownPropName = "repeat";
-  const dropdownValue = useGradientStore(
-    (state) =>
-      state.backgroundInputs.find((i) => i.id === id)?.[dropdownPropName]
-  );
+  const addGroup = useGradientStore((state) => state.addGroup);
+  const clearGroup = useGradientStore((state) => state.clearGroup);
+  const deleteGroup = useGradientStore((state) => state.deleteGroup);
   const toggleAccordion = useGradientStore((state) => state.toggleAccordion);
-  const isAccordionOpen = useGradientStore(
-    (state) =>
-      state.backgroundInputs.find((i) => i.id === id)?.["isAccordionOpen"]
-  );
+
+  const layerRegistry = useGradientStore((state) => state.layerRegistry);
 
   return (
     <div
@@ -94,6 +93,8 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
         isLayerHidden={isLayerHidden}
         isOpen={isAccordionOpen}
         onToggle={() => toggleAccordion(id)}
+        draggable
+        isGroup={!!groupId}
         headerContent={
           <>
             <div className="bg-value-container row">
@@ -102,15 +103,17 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
               </div>
               <div className="bg-block-input-wrapper gradient-identifier">
                 <GradientInput
-                  key={`${id}-gradient-name`}
+                  // key={`${id}-gradient-name`}
                   isStringInput
                   backgroundId={id}
                   backgroundPropName="name"
+                  backgroundValue={layerRegistry[id]["name"]}
                   isValueRelative
+                  editBackgroundValue={editBackgroundValue}
                 />
                 <div className="code-input-wrapper btn-wrapper">
                   <button
-                    disabled={backgroundLayersLength === 1}
+                    disabled={layoutListLength === 1}
                     className="btn btn-secondary delete-bg-layer-btn"
                     onClick={() => deleteBackgroundLayer(id)}
                     data-tooltip-id="delete-layer"
@@ -118,7 +121,7 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                   >
                     x
                   </button>
-                  {backgroundLayersLength > 1 && <Tooltip id="delete-layer" />}
+                  {layoutListLength > 1 && <Tooltip id="delete-layer" />}
                 </div>
               </div>
             </div>
@@ -131,15 +134,35 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                 >
                   default data
                 </div>
+                <button
+                  className="btn btn-secondary toggle-visibility-btn"
+                  onClick={() => toggleVisibility(id)}
+                  data-tooltip-id="toggle-layer-visibility"
+                  data-tooltip-content={
+                    isLayerHidden ? "Show layer" : "Hide layer"
+                  }
+                  data-tooltip-place="left"
+                >
+                  <div
+                    className={classnames(
+                      "toggle-visibility-icon",
+                      { show: isLayerHidden },
+                      { hide: !isLayerHidden }
+                    )}
+                  />
+                </button>
+                <Tooltip id="toggle-layer-visibility" />
               </div>
               <div className="bg-block-input-wrapper">
                 <GradientInput
-                  key={`${id}-value`}
+                  // key={`${id}-value`}
                   isStringInput
                   isTextarea
                   backgroundId={id}
                   backgroundPropName="value"
+                  backgroundValue={layerRegistry[id]["value"]}
                   isValueRelative
+                  editBackgroundValue={editBackgroundValue}
                 />
                 <div className="btn-wrapper">
                   <button
@@ -152,29 +175,14 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                     <div className="copy-icon" />
                   </button>
                   <Tooltip id="clone-layer" />
-                  <button
-                    className="btn btn-secondary toggle-visibility-btn"
-                    onClick={() => toggleVisibility(id)}
-                    data-tooltip-id="toggle-layer-visibility"
-                    data-tooltip-content={
-                      isLayerHidden ? "Show layer" : "Hide layer"
-                    }
-                    data-tooltip-place="left"
-                  >
-                    <div
-                      className={classnames(
-                        "toggle-visibility-icon",
-                        { show: isLayerHidden },
-                        { hide: !isLayerHidden }
-                      )}
-                    />
-                  </button>
-                  <Tooltip id="toggle-layer-visibility" />
                   <MenuWrapper
                     backgroundId={id}
                     onSelectAction={moveToGroup}
+                    addGroup={addGroup}
+                    clearGroup={clearGroup}
+                    deleteGroup={deleteGroup}
                     items={layerGroups}
-                    selectedElementId={currentBackgroundGroupId}
+                    selectedElementId={groupId}
                     btnIconClassName="move-to-folder-icon"
                     newItemIconClassName="add-folder-icon"
                     newItemLabel="Add new group"
@@ -192,33 +200,41 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
           <div className="bg-position-container row row-secondary">
             <div className="code-input-label label">{"position: "}</div>
             <GradientInput
-              key={`${id}-x`}
+              // key={`${id}-x`}
               backgroundId={id}
               backgroundPropName="x"
+              backgroundValue={layerRegistry[id]["x"]}
               isValueRelative
               isNegativeValAllowed
+              editBackgroundValue={editBackgroundValue}
             />
             <GradientInput
-              key={`${id}-y`}
+              // key={`${id}-y`}
               backgroundId={id}
               backgroundPropName="y"
+              backgroundValue={layerRegistry[id]["y"]}
               isValueRelative
               isNegativeValAllowed
+              editBackgroundValue={editBackgroundValue}
             />
           </div>
           <div className="bg-size-container row row-secondary">
             <div className="code-input-label label">{"size: "}</div>
             <GradientInput
-              key={`${id}-w`}
+              // key={`${id}-w`}
               backgroundId={id}
               backgroundPropName="w"
+              backgroundValue={layerRegistry[id]["w"]}
               isValueRelative
+              editBackgroundValue={editBackgroundValue}
             />
             <GradientInput
-              key={`${id}-h`}
+              // key={`${id}-h`}
               backgroundId={id}
               backgroundPropName="h"
+              backgroundValue={layerRegistry[id]["h"]}
               isValueRelative
+              editBackgroundValue={editBackgroundValue}
             />
           </div>
           <div className="bg-size-container row row-secondary">

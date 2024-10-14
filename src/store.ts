@@ -1,6 +1,11 @@
 import { create } from "zustand";
-import { handleClone } from "./tools";
 import { createJSONStorage, persist } from "zustand/middleware";
+
+export function isLayerGroup(
+  item: BackgroundInput | BackgroundGroupType
+): item is BackgroundGroupType {
+  return "children" in item;
+}
 
 export type BackgroundInputNumber = undefined | number;
 
@@ -9,7 +14,7 @@ export type BackgroundInput = {
   isAccordionOpen: boolean;
   name?: string;
   isDefaultData: boolean;
-  isHidden?: boolean;
+  isHidden: boolean;
   value?: string | React.ChangeEvent<Element>;
   x?: number;
   y?: BackgroundInputNumber;
@@ -22,8 +27,359 @@ export type BackgroundGroupType = {
   id: string;
   name?: string;
   isOpen?: boolean;
-  childrenIds: string[];
 };
+
+export type LayerRegistry = Record<string, BackgroundInput>;
+export type GroupRegistry = Record<string, BackgroundGroupType>;
+export type LayoutGroup = { id: string; children: string[] };
+export type Layout = (string | LayoutGroup)[];
+
+export function setHidden(
+  value: boolean,
+  groupId: string,
+  layout: Layout,
+  layerRegistry: LayerRegistry,
+  groupRegistry: GroupRegistry
+): [Layout, LayerRegistry, GroupRegistry] {
+  getGroupLayers(groupId, layout).forEach((id) => {
+    layerRegistry[id].isHidden = value;
+  });
+  return [layout, layerRegistry, groupRegistry];
+}
+
+export function getGroupLayers(groupId: string, layout: Layout): string[] {
+  const group = layout.find(
+    (item) => typeof item !== "string" && item.id === groupId
+  );
+  return group && typeof group !== "string" ? group.children : [];
+}
+
+export function deleteGroup(
+  groupId: string,
+  layout: Layout,
+  layerRegistry: LayerRegistry,
+  groupRegistry: GroupRegistry
+): [Layout, LayerRegistry, GroupRegistry] {
+  const childrenIds = getGroupLayers(groupId, layout);
+  return [
+    layout.filter((item) => isString(item) || item.id !== groupId),
+    Object.fromEntries(
+      Object.entries(layerRegistry).filter(([id]) => !childrenIds.includes(id))
+    ),
+    Object.fromEntries(
+      Object.entries(groupRegistry).filter(([id]) => id !== groupId)
+    ),
+  ];
+}
+
+export function handleClearGroup(groupId: string, layout: Layout): Layout {
+  const childrenIds = getGroupLayers(groupId, layout);
+  return [
+    ...layout.flatMap((i) => {
+      if (!isString(i) && i.id === groupId) {
+        const newItem = { ...i, children: [] };
+        return [...childrenIds, newItem];
+      } else return i;
+    }),
+  ];
+}
+
+export function deleteLayer(
+  layerId: string,
+  layout: Layout,
+  layerRegistry: LayerRegistry,
+  groupRegistry: GroupRegistry
+): [Layout, LayerRegistry, GroupRegistry] {
+  const updatedLayerRegistry = Object.fromEntries(
+    Object.entries(layerRegistry).filter(([k, v]) => k !== layerId)
+  );
+  return [
+    layout.flatMap((item) => {
+      if (isString(item) && item === layerId) {
+        return [];
+      } else if (!isString(item) && item.children.includes(layerId)) {
+        return {
+          ...item,
+          children: item.children.filter((item) => item !== layerId),
+        };
+      }
+      return item;
+    }),
+    updatedLayerRegistry,
+    groupRegistry,
+  ];
+}
+
+export function isString(x: unknown): x is string {
+  return typeof x === "string";
+}
+function isClonePresent(layerId: string, layerRegistry: LayerRegistry) {
+  for (const i of Object.keys(layerRegistry)) {
+    if (isString(i) && i.includes(layerId + "_clone-")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getCloneNumber(layerId: string): number {
+  return +layerId?.substring(layerId?.indexOf("-") + 1);
+}
+
+function sortClonesByNumber(layerRegistry: LayerRegistry) {
+  return [...Object.keys(layerRegistry)]
+    .filter((i) => isString(i))
+    .sort((a, b) => getCloneNumber(b) - getCloneNumber(a));
+}
+
+function findLastCloneLayer(layerRegistry: LayerRegistry, layerId: string) {
+  const searchId = layerId.includes("_clone-")
+    ? layerId.substring(0, layerId.indexOf("-") + 1)
+    : layerId + "_clone-";
+  return (
+    (sortClonesByNumber(layerRegistry).find(
+      (i) => isString(i) && i.includes(searchId)
+    ) as string) ?? layerId
+  );
+}
+
+function isLayerPresentInOtherGroups(
+  layerId: string,
+  groupId: string,
+  layout: Layout
+): { present: boolean; groupId: string } {
+  for (const i of layout) {
+    if (!isString(i) && i.children.includes(layerId) && i.id !== groupId) {
+      return { present: true, groupId: i.id };
+    }
+  }
+  return { present: false, groupId: "" };
+}
+
+export function handleMoveToGroup(
+  layerId: string,
+  groupId: string,
+  layout: Layout,
+  groupRegistry: GroupRegistry
+): [Layout, GroupRegistry] {
+  const updatedGroupRegistry = Object.fromEntries(
+    Object.entries(groupRegistry).map(([k, v]) => {
+      if (k === groupId) {
+        return [k, { ...v, isOpen: true }];
+      } else {
+        return [k, v];
+      }
+    })
+  );
+  return [
+    layout.flatMap((item) => {
+      if (item === layerId) {
+        return [];
+      }
+      // it's the target group and it doesn't have this elem among children yet
+      if (
+        !isString(item) &&
+        item.id === groupId &&
+        !item.children.includes(layerId)
+      ) {
+        return {
+          ...item,
+          children: [layerId, ...item.children],
+        };
+      }
+      // it's some group and it has this elem among children
+      if (!isString(item) && item.children.includes(layerId)) {
+        if (isLayerPresentInOtherGroups(layerId, groupId, layout).groupId) {
+          return {
+            ...item,
+            children: item.children.filter((item) => item !== layerId),
+          };
+        }
+
+        // we're adding the item back to layout, outside the group
+        return [
+          layerId,
+          {
+            ...item,
+            children: item.children.filter((item) => item !== layerId),
+          },
+        ];
+      }
+      if (!isString(item) && item.id !== groupId) {
+        return {
+          ...item,
+          children: item.children.filter((item) => item !== layerId),
+        };
+      }
+      return item;
+    }),
+    updatedGroupRegistry,
+  ];
+}
+
+export function cloneLayer(
+  layerId: string,
+  layout: Layout,
+  layerRegistry: LayerRegistry,
+  groupRegistry: GroupRegistry
+): [Layout, LayerRegistry, GroupRegistry] {
+  let newId = "";
+  let newName = "";
+  const lastCloneLayer = findLastCloneLayer(layerRegistry, layerId);
+  const newCloneNum =
+    +lastCloneLayer?.substring(lastCloneLayer?.indexOf("-") + 1) + 1;
+  if (isClonePresent(layerId, layerRegistry) || layerId.includes("_clone-")) {
+    newId =
+      lastCloneLayer.substring(0, lastCloneLayer.indexOf("-") + 1) +
+      newCloneNum;
+    newName =
+      (layerRegistry[lastCloneLayer].name?.substring(
+        0,
+        layerRegistry[lastCloneLayer].name?.lastIndexOf("-") + 1
+      ) ?? "new clone") + newCloneNum;
+  } else {
+    newId = layerId + "_clone-" + 0;
+    newName = layerRegistry[layerId].name + "_clone-" + 0;
+  }
+  const newLayerRegistry = {
+    ...layerRegistry,
+    [newId]: {
+      ...layerRegistry[layerId],
+      name: newName,
+      id: newId,
+      isDefaultData: false,
+    },
+  };
+  return [
+    layout.flatMap((item) => {
+      if (isString(item) && item === layerId) {
+        return [newId, item];
+      } else if (!isString(item) && item.children.includes(layerId)) {
+        return {
+          ...item,
+          children: item.children.flatMap((item) =>
+            item === layerId ? [newId, item] : item
+          ),
+        };
+      }
+      return item;
+    }),
+    newLayerRegistry,
+    groupRegistry,
+  ];
+}
+
+export function isGroup(item: unknown): item is LayoutGroup {
+  return !isString(item);
+}
+
+export function handleDragByDirection(
+  targetId: string,
+  sourceId: string,
+  direction: string,
+  layout: Layout,
+  layerRegistry: LayerRegistry,
+  groupRegistry: GroupRegistry
+): [Layout, LayerRegistry, GroupRegistry] {
+  if (targetId === sourceId) {
+    return [layout, layerRegistry, groupRegistry];
+  }
+  const sourceItem =
+    sourceId in groupRegistry
+      ? (layout.find((i) => isGroup(i) && i.id === sourceId) as LayoutGroup)
+      : sourceId;
+  if (direction === "before" || direction === "after") {
+    return [
+      layout.flatMap((item) => {
+        if (
+          item === sourceItem &&
+          !(isGroup(sourceItem) && !(targetId in groupRegistry))
+        ) {
+          return [];
+        }
+        if (item === targetId) {
+          return direction === "before" ? [sourceItem, item] : [item, sourceId];
+        }
+        // if we're inserting before or after a group
+        if (isGroup(item) && item.id === targetId) {
+          const newItem = {
+            ...item,
+            children: item.children.filter((i) => i !== sourceItem),
+          };
+          return direction === "before"
+            ? [sourceItem, newItem]
+            : [newItem, sourceItem];
+        }
+        // if it's within a group
+        if (isGroup(item)) {
+          if (item.id !== targetId && !isGroup(sourceItem)) {
+            return {
+              ...item,
+              children: item.children
+                // remove the draggable item from previous position
+                .filter((i) => i !== sourceItem)
+                // insert before or after target
+                .flatMap((i) =>
+                  i === targetId
+                    ? direction === "before"
+                      ? [sourceId, i]
+                      : [i, sourceId]
+                    : i
+                ),
+            };
+          } else {
+            // if the group is the target, add our layer inside the group
+            if (!isGroup(sourceItem)) {
+              return {
+                ...item,
+                children:
+                  direction === "before"
+                    ? [
+                        sourceId,
+                        ...item.children.filter((item) => item !== sourceId),
+                      ]
+                    : [
+                        ...item.children.filter((item) => item !== sourceId),
+                        sourceId,
+                      ],
+              };
+            }
+          }
+        }
+        return item;
+      }),
+      layerRegistry,
+      groupRegistry,
+    ];
+  } else {
+    return [
+      layout.flatMap((item) => {
+        if (item === sourceItem && !isGroup(item) && !isGroup(sourceItem)) {
+          return [];
+        }
+        if (isGroup(item) && !isGroup(sourceItem)) {
+          return item.id !== targetId
+            ? {
+                ...item,
+                children: item.children
+                  .filter((i) => i !== sourceItem)
+                  .flatMap((i) => (i === targetId ? [sourceId, i] : i)),
+              }
+            : {
+                ...item,
+                children: [
+                  sourceId,
+                  ...item.children.filter((item) => item !== sourceId),
+                ],
+              };
+        }
+        return item;
+      }),
+      layerRegistry,
+      groupRegistry,
+    ];
+  }
+}
 
 export type GradientObjectState = {
   width: number;
@@ -32,18 +388,18 @@ export type GradientObjectState = {
   borderWidth: number;
   groupCounter: number;
   layerCounter: number;
-  backgroundGroups: BackgroundGroupType[];
-  backgroundInputs: BackgroundInput[];
+  groupRegistry: GroupRegistry;
+  layerRegistry: LayerRegistry;
+  layout: Layout;
 };
 
 export type GradientObjectAction = {
-  updateBackgroundInputs: (incomingState: BackgroundInput[]) => void;
-  cloneLayer: (id: BackgroundInput["id"]) => void;
+  cloneLayer: (layerId: BackgroundInput["id"]) => void;
   editGradientObjectValue: (
     incomingState: Partial<GradientObjectState>
   ) => void;
   addBackgroundLayer: () => void;
-  deleteBackgroundLayer: (id: BackgroundInput["id"]) => void;
+  deleteLayer: (layerId: string) => void;
   editBackgroundValue: (
     id: BackgroundInput["id"],
     valueName: keyof BackgroundInput,
@@ -59,22 +415,20 @@ export type GradientObjectAction = {
     layerId: BackgroundInput["id"],
     groupId: BackgroundGroupType["id"]
   ) => void;
-  addGroup: (name: string) => void;
+  addGroup: (layerId: string, name: string) => void;
   editGroupName: (id: BackgroundGroupType["id"], name: string) => void;
   toggleGroupAccordion: (id: BackgroundGroupType["id"]) => void;
   deleteGroup: (groupId: BackgroundGroupType["id"]) => void;
   clearGroup: (groupId: BackgroundGroupType["id"]) => void;
-  updateGroups: (incomingState: BackgroundGroupType[]) => void;
-  updateGroupChildren: (
-    id: BackgroundGroupType["id"],
-    newChildren: BackgroundGroupType["childrenIds"]
-  ) => void;
+  handleDrag: (targetId: string, sourceId: string, direction: string) => void;
 };
 
 const gradientDefaultValue =
   "linear-gradient(transparent 0 30%, pink 30% 34%, transparent 34% 49%, #76ecd4 49% 53%, transparent 53%)";
 const gradientDefaultValue1 =
   "radial-gradient(100% 100% at 50% 50%, #000 49.5%, transparent 50%)";
+
+const initialDate = new Date().valueOf().toString();
 
 export const useGradientStore = create<
   GradientObjectState & GradientObjectAction
@@ -87,10 +441,10 @@ export const useGradientStore = create<
       borderWidth: 1,
       groupCounter: 0,
       layerCounter: 1,
-      backgroundGroups: [],
-      backgroundInputs: [
-        {
-          id: new Date().valueOf().toString(),
+      groupRegistry: {},
+      layerRegistry: {
+        [initialDate]: {
+          id: initialDate,
           isAccordionOpen: true,
           name: "layer-1",
           isDefaultData: true,
@@ -102,24 +456,34 @@ export const useGradientStore = create<
           h: 20,
           repeat: "no-repeat",
         },
-      ],
-      cloneLayer: (id) =>
+      },
+      layout: [initialDate],
+      cloneLayer: (layerId) => {
+        const [layout, layerRegistry, groupRegistry] = cloneLayer(
+          layerId,
+          get().layout,
+          get().layerRegistry,
+          get().groupRegistry
+        );
         set({
           ...get(),
           layerCounter: get().layerCounter + 1,
-          backgroundInputs: [...handleClone(get().backgroundInputs, id)],
-        }),
-      updateBackgroundInputs: (incomingState) =>
-        set({ ...get(), backgroundInputs: [...incomingState] }),
+          layout,
+          layerRegistry,
+          groupRegistry,
+        });
+      },
       editGradientObjectValue: (incomingState) =>
         set({ ...get(), ...incomingState }),
-      addBackgroundLayer: () =>
+      addBackgroundLayer: () => {
+        const newDate = new Date().valueOf().toString();
         set({
           ...get(),
           layerCounter: get().layerCounter + 1,
-          backgroundInputs: [
-            {
-              id: new Date().valueOf().toString(),
+          layout: [newDate, ...get().layout],
+          layerRegistry: {
+            [newDate]: {
+              id: newDate,
               isAccordionOpen: true,
               name: `layer-${get().layerCounter + 1}`,
               isDefaultData: true,
@@ -131,159 +495,166 @@ export const useGradientStore = create<
               h: 100,
               repeat: "no-repeat",
             },
-            ...get().backgroundInputs,
-          ],
-        }),
-      deleteBackgroundLayer: (id) =>
+            ...get().layerRegistry,
+          },
+        });
+      },
+      deleteLayer: (layerId) => {
+        const [layout, layerRegistry, groupRegistry] = deleteLayer(
+          layerId,
+          get().layout,
+          get().layerRegistry,
+          get().groupRegistry
+        );
         set({
           ...get(),
-          backgroundInputs: get().backgroundInputs.filter(
-            (item) => item.id !== id
-          ),
-        }),
+          layout,
+          layerRegistry,
+          groupRegistry,
+        });
+      },
       editBackgroundValue: (id, valueName, value) =>
         set({
           ...get(),
-          backgroundInputs: get().backgroundInputs.map((i) => {
-            if (i.id === id) {
-              return { ...i, isDefaultData: false, [valueName]: value };
-            } else {
-              return i;
-            }
-          }),
+          layerRegistry: Object.fromEntries(
+            Object.entries(get().layerRegistry).map(([k, v]) => {
+              if (k === id) {
+                const newV = { ...v, isDefaultData: false, [valueName]: value };
+                return [k, newV];
+              } else {
+                return [k, v];
+              }
+            })
+          ),
         }),
       editCheckboxValue: () =>
         set({ ...get(), isBorderShown: !get().isBorderShown }),
       toggleAccordion: (id) =>
         set({
           ...get(),
-          backgroundInputs: get().backgroundInputs.map((i) => {
-            if (i.id === id) {
-              return { ...i, isAccordionOpen: !i.isAccordionOpen };
-            } else {
-              return i;
-            }
-          }),
+          layerRegistry: Object.fromEntries(
+            Object.entries(get().layerRegistry).map(([k, v]) => {
+              if (k === id) {
+                return [k, { ...v, isAccordionOpen: !v.isAccordionOpen }];
+              } else {
+                return [k, v];
+              }
+            })
+          ),
         }),
       toggleLayerVisibility: (id) =>
         set({
           ...get(),
-          backgroundInputs: get().backgroundInputs.map((i) => {
-            if (i.id === id) {
-              return { ...i, isHidden: !i.isHidden };
+          layerRegistry: Object.fromEntries(
+            Object.entries(get().layerRegistry).map(([k, v]) => {
+              if (k === id) {
+                return [k, { ...v, isHidden: !v.isHidden }];
+              } else {
+                return [k, v];
+              }
+            })
+          ),
+        }),
+      moveToGroup: (layerId, groupId) => {
+        const [layout, groupRegistry] = handleMoveToGroup(
+          layerId,
+          groupId,
+          get().layout,
+          get().groupRegistry
+        );
+        set({
+          ...get(),
+          layout,
+          groupRegistry,
+        });
+      },
+      addGroup: (layerId, name) => {
+        const newDate = new Date().valueOf().toString();
+        set({
+          ...get(),
+          groupCounter: get().layerCounter + 1,
+          layout: get().layout.flatMap((i) => {
+            const newItem = { id: newDate, children: [] };
+            if (isString(i) && i === layerId) {
+              return [newItem, i];
+            } else if (!isString(i) && i.children.includes(layerId)) {
+              return [newItem, i];
             } else {
               return i;
             }
           }),
-        }),
-      moveToGroup: (layerId, groupId) =>
-        set({
-          ...get(),
-          backgroundGroups: get().backgroundGroups.map((i) => {
-            if (i.id === groupId && !i.childrenIds.includes(layerId)) {
-              return {
-                ...i,
-                childrenIds: [
-                  ...(get().backgroundGroups.find((el) => el.id === groupId)
-                    ?.childrenIds ?? []),
-                  layerId,
-                ],
-              };
-            } else {
-              return {
-                ...i,
-                childrenIds: [
-                  ...(get()
-                    .backgroundGroups.find((el) => el?.id === i.id)
-                    ?.childrenIds?.filter((childId) => childId !== layerId) ??
-                    []),
-                ],
-              };
-            }
-          }),
-        }),
-      addGroup: (name) =>
-        set({
-          ...get(),
-          groupCounter: get().layerCounter + 1,
-          backgroundGroups: [
-            {
-              id: new Date().valueOf().toString() + "-group",
+          groupRegistry: {
+            [newDate]: {
+              id: newDate,
               name: name ?? `group-${get().groupCounter + 1}`,
               isOpen: false,
-              childrenIds: [],
             },
-            ...get().backgroundGroups,
-          ],
-        }),
+            ...get().groupRegistry,
+          },
+        });
+      },
       editGroupName: (id, name) =>
         set({
           ...get(),
-          backgroundGroups: [
-            ...get().backgroundGroups.map((i) => {
-              if (i.id === id) {
-                return { ...i, name: name };
+          groupRegistry: Object.fromEntries(
+            Object.entries(get().groupRegistry).map(([k, v]) => {
+              if (k === id) {
+                return [k, { ...v, name: name }];
               } else {
-                return i;
+                return [k, v];
               }
-            }),
-          ],
+            })
+          ),
         }),
       toggleGroupAccordion: (id) =>
         set({
           ...get(),
-          backgroundGroups: [
-            ...get().backgroundGroups.map((i) => {
-              if (i.id === id) {
-                return { ...i, isOpen: !i.isOpen };
+          groupRegistry: Object.fromEntries(
+            Object.entries(get().groupRegistry).map(([k, v]) => {
+              if (k === id) {
+                return [k, { ...v, isOpen: !v.isOpen }];
               } else {
-                return i;
+                return [k, v];
               }
-            }),
-          ],
+            })
+          ),
         }),
-      deleteGroup: (groupId) =>
+      deleteGroup: (groupId) => {
+        const [layout, layerRegistry, groupRegistry] = deleteGroup(
+          groupId,
+          get().layout,
+          get().layerRegistry,
+          get().groupRegistry
+        );
         set({
           ...get(),
-          backgroundGroups: [
-            ...get().backgroundGroups.filter((i) => i.id !== groupId),
-          ],
-        }),
-      clearGroup: (groupId) =>
+          layout,
+          layerRegistry,
+          groupRegistry,
+        });
+      },
+      clearGroup: (groupId) => {
         set({
           ...get(),
-          backgroundGroups: [
-            ...get().backgroundGroups.map((i) => {
-              if (i.id === groupId) {
-                return {
-                  ...i,
-                  childrenIds: [],
-                };
-              } else {
-                return i;
-              }
-            }),
-          ],
-        }),
-      updateGroups: (incomingState) =>
-        set({ ...get(), backgroundGroups: [...incomingState] }),
-      updateGroupChildren: (id, newChildren) =>
+          layout: handleClearGroup(groupId, get().layout),
+        });
+      },
+      handleDrag: (targetId, sourceId, direction) => {
+        const [layout, layerRegistry, groupRegistry] = handleDragByDirection(
+          targetId,
+          sourceId,
+          direction,
+          get().layout,
+          get().layerRegistry,
+          get().groupRegistry
+        );
         set({
           ...get(),
-          backgroundGroups: [
-            ...get().backgroundGroups.map((i) => {
-              if (i.id === id) {
-                console.log("newChildren in store", newChildren, {
-                  ...i,
-                  childrenIds: [...newChildren],
-                });
-                return { ...i, childrenIds: [...newChildren] };
-              } else {
-                return i;
-              }
-            }),
-          ],
-        }),
+          layout,
+          layerRegistry,
+          groupRegistry,
+        });
+      },
     }),
     {
       name: `gradient-image`,

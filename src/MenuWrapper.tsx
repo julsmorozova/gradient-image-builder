@@ -5,13 +5,15 @@ import {
   BackgroundGroupType,
   BackgroundInput,
   GradientObjectAction,
-  useGradientStore,
 } from "./store";
 import { PlacesType } from "react-tooltip";
 import { Modal } from "./Modal";
 
 type MenuWrapperProps = {
   onSelectAction: GradientObjectAction["moveToGroup"];
+  addGroup: GradientObjectAction["addGroup"];
+  clearGroup: GradientObjectAction["clearGroup"];
+  deleteGroup: GradientObjectAction["deleteGroup"];
   backgroundId: BackgroundInput["id"];
   items: Partial<BackgroundGroupType>[];
   btnIconClassName: string;
@@ -34,12 +36,13 @@ export default function MenuWrapper({
   tooltipContent,
   tooltipId,
   tooltipPlace,
+  addGroup,
+  clearGroup,
+  deleteGroup,
 }: MenuWrapperProps) {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const addGroup = useGradientStore((state) => state.addGroup);
-  const clearGroup = useGradientStore((state) => state.clearGroup);
-  const deleteGroup = useGradientStore((state) => state.deleteGroup);
+
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -78,6 +81,7 @@ export default function MenuWrapper({
         createPortal(
           <div className="modal-overlay">
             <Modal
+              layerId={backgroundId}
               title="Add new group"
               onCancel={() => setModalOpen(false)}
               onSave={addGroup}

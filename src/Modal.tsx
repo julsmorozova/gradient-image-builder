@@ -4,17 +4,18 @@ import "./Modal.css";
 
 type ModalProps = {
   title: string;
+  layerId: string;
   onCancel: () => void;
   onSave: GradientObjectAction["addGroup"];
 };
 export const Modal = forwardRef(
   (
-    { title, onSave, onCancel }: ModalProps,
+    { title, layerId, onSave, onCancel }: ModalProps,
     ref: React.ForwardedRef<HTMLDivElement | null>
   ) => {
     const [input, setInput] = useState("");
     const handleConfirm = () => {
-      onSave(input);
+      onSave(layerId, input);
       onCancel();
     };
     return (

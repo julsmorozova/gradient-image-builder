@@ -1,5 +1,5 @@
 import { CSSProperties, MutableRefObject } from "react";
-import { BackgroundGroupType, BackgroundInput } from "./store";
+import { BackgroundInput } from "./store";
 
 export enum GradientType {
   RADIAL = "radial",
@@ -116,69 +116,77 @@ export const getGradientType = (input: string): GradientType => {
 };
 
 /* Drag and drop */
-export const dragStart = (
-  index: number,
-  ref: MutableRefObject<number | null>
-) => {
-  ref.current = index;
+export const dragStart = (id: string, ref: MutableRefObject<string | null>) => {
+  ref.current = id;
 };
 
-export const dragEnter = (
-  index: number,
-  ref: MutableRefObject<number | null>
-) => {
-  ref.current = index;
-};
-
-export const sortByArrayOrder = (
-  orderArray: string[],
-  arrayToSort: unknown[]
-) => {
-  const itemPositions: Record<string, number> = {};
-  for (const [index, id] of orderArray.entries()) {
-    itemPositions[id] = index;
-  }
-  console.log(
-    "sortByArrayOrder",
-    "orderArray",
-    orderArray,
-    "arrayToSort",
-    arrayToSort
-  );
-  return arrayToSort.sort((a, b) => itemPositions[a.id] - itemPositions[b.id]);
-};
-
-export const equalizeArrayOrders = (
-  arrayToSort: BackgroundGroupType["childrenIds"],
-  referenceArray: BackgroundGroupType["childrenIds"]
-) => {
-  return arrayToSort.sort(function (a, b) {
-    return referenceArray.indexOf(a) - referenceArray.indexOf(b);
-  });
-};
-
-export const handleSort = (
-  items: unknown[],
-  dragItem: MutableRefObject<number | null>,
-  dragOverItem: MutableRefObject<number | null>,
-  callback: CallableFunction,
-  relatedArray?: BackgroundGroupType["childrenIds"],
-  id?: string
-) => {
-  const copiedItems: unknown[] = [...items];
-  const dragItemContent =
-    dragItem.current !== null && copiedItems.splice(dragItem.current, 1)[0];
-  dragOverItem.current !== null &&
-    dragItemContent &&
-    copiedItems.splice(dragOverItem.current, 0, dragItemContent);
-  dragItem.current = null;
-  dragOverItem.current = null;
-  // if id & relatedArray is passed, we've dragged and dropped BackgroundInputs and we need to change order in related Group childrenIds array
-  if (id && relatedArray) {
-    const arrayIds = copiedItems.map((i) => i.id as string);
-    const updatedArray = equalizeArrayOrders(relatedArray, arrayIds);
-    callback(id, updatedArray);
+export function getDragDirection(e: React.DragEvent) {
+  const currentTarget = e.currentTarget as HTMLDivElement;
+  const y0 = currentTarget && currentTarget?.getBoundingClientRect().y;
+  const y1 = e.clientY;
+  const targetHeight = currentTarget && currentTarget?.clientHeight;
+  const dragDiff = y1 - y0;
+  if (dragDiff < 0 || dragDiff > targetHeight) return;
+  if (dragDiff <= targetHeight / 3) {
+    return "before";
+  } else if (dragDiff >= 0.67 * targetHeight) {
+    return "after";
   } else {
-    callback(copiedItems);
+    return "inside";
   }
+}
+
+export const handleDragEnter = (e: React.DragEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const direction = getDragDirection(e);
+  const currentTarget = e.currentTarget as HTMLDivElement;
+
+  if (direction === "before") {
+    currentTarget.classList.add("inserting-above");
+  }
+  if (direction === "after") {
+    currentTarget.classList.add("inserting-below");
+  }
+  if (direction === "inside" && currentTarget.classList.contains("group")) {
+    currentTarget.classList.add("inserting-inside");
+  }
+};
+
+export const handleDragLeave = (e: React.DragEvent) => {
+  e.preventDefault();
+  const direction = getDragDirection(e);
+  const currentTarget = e.currentTarget as HTMLDivElement;
+  const target = e.target as HTMLDivElement;
+  if (
+    (direction !== "before" &&
+      currentTarget.classList.contains("inserting-above")) ||
+    (currentTarget.classList.contains("group") &&
+      !target.classList.contains("group"))
+  ) {
+    currentTarget.classList.remove("inserting-above");
+  }
+  if (
+    (direction !== "after" &&
+      currentTarget.classList.contains("inserting-below")) ||
+    (currentTarget.classList.contains("group") &&
+      !target.classList.contains("group"))
+  ) {
+    currentTarget.classList.remove("inserting-below");
+  }
+  if (
+    direction !== "inside" &&
+    currentTarget.classList.contains("inserting-inside")
+  ) {
+    currentTarget.classList.remove("inserting-inside");
+  }
+};
+
+export const removeDirectionClasses = (e: React.DragEvent) => {
+  const currentTarget = e.currentTarget as HTMLDivElement;
+  currentTarget.classList.remove(
+    "inserting-above",
+    "inserting-below",
+    "inserting-inside"
+  );
 };

@@ -11,6 +11,8 @@ type AccordionProps = {
   onToggle: () => void;
   customShowTooltipLabel?: string;
   customHideTooltipLabel?: string;
+  draggable: boolean;
+  isGroup?: boolean;
 };
 
 export default function Accordion(props: AccordionProps) {
@@ -22,10 +24,15 @@ export default function Accordion(props: AccordionProps) {
     onToggle,
     customShowTooltipLabel,
     customHideTooltipLabel,
+    draggable,
+    isGroup,
   } = props;
   return (
     <div className="accordion-container">
-      <div className="accordion-header">
+      <div
+        className={classnames({ "accordion-header": true, group: isGroup })}
+        draggable={draggable}
+      >
         <div
           className={classnames("opacity-overlay", {
             "show-overlay": isLayerHidden,

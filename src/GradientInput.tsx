@@ -1,5 +1,9 @@
-import { useId } from "react";
-import { useGradientStore, BackgroundInput } from "./store";
+import { ChangeEvent } from "react";
+import {
+  BackgroundInput,
+  BackgroundInputNumber,
+  GradientObjectAction,
+} from "./store";
 import "./NumberInput.css";
 
 type GradientInputProps = {
@@ -11,9 +15,15 @@ type GradientInputProps = {
     BackgroundInput,
     "value" | "name" | "x" | "y" | "h" | "w"
   >;
+  backgroundValue?:
+    | string
+    | ChangeEvent<Element>
+    | number
+    | BackgroundInputNumber;
   backgroundId: BackgroundInput["id"];
   isNegativeValAllowed?: boolean;
   isTextarea?: boolean;
+  editBackgroundValue: GradientObjectAction["editBackgroundValue"];
 };
 
 export default function GradientInput(props: GradientInputProps) {
@@ -26,28 +36,18 @@ export default function GradientInput(props: GradientInputProps) {
     backgroundId,
     isNegativeValAllowed,
     isTextarea,
+    backgroundValue,
+    editBackgroundValue,
   } = props;
-  const editBackgroundValue = useGradientStore(
-    (state) => state.editBackgroundValue
-  );
-  const backgroundValue = useGradientStore(
-    (state) =>
-      state.backgroundInputs.find((i) => i.id === backgroundId)?.[
-        backgroundPropName
-      ]
-  );
 
   const handleInputName = (name: string) => {
     return name === "value" ? "gradient" : name;
   };
 
-  const id = useId();
-
   return isStringInput ? (
     <div className="input-decoration">
       {isTextarea ? (
         <textarea
-          id={id + "-gradient-textarea"}
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
@@ -59,12 +59,11 @@ export default function GradientInput(props: GradientInputProps) {
         />
       ) : (
         <input
-          id={id + "-gradient-input-name"}
           type="text"
           spellCheck="false"
-          onChange={(e) =>
-            editBackgroundValue(backgroundId, "name", e.currentTarget.value)
-          }
+          onChange={(e) => {
+            editBackgroundValue(backgroundId, "name", e.currentTarget.value);
+          }}
           value={backgroundValue as string}
         />
       )}
@@ -74,7 +73,6 @@ export default function GradientInput(props: GradientInputProps) {
       <div className="label">{handleInputName(backgroundPropName)}</div>
       <div className="input-decoration">
         <input
-          id={id + "-gradient-input-number"}
           type="number"
           max={maxValue}
           onChange={(e) =>

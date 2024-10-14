@@ -1,9 +1,32 @@
 .background-block-container {
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid #eee;
 }
 
 .background-group {
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid #eee;
+}
+
+.dnd-element {
+  position: relative;
+}
+
+.dnd-element.inserting-inside::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-shadow: inset 4px 4px 1px var(--accent-color),
+    inset -4px -4px 1px var(--accent-color);
+}
+
+.dnd-element.inserting-above {
+  border-block-start: 4px solid var(--accent-color);
+}
+
+.dnd-element.inserting-below {
+  border-block-end: 4px solid var(--accent-color);
 }
 
 .background-group-name {
@@ -17,7 +40,9 @@
 }
 
 .background-group .background-block-container {
-  padding: 0.5rem 0 0.5rem 2rem;
+  margin: 0 0 0 2rem;
+  padding: 0.5rem 0;
+  border: 1px solid #eee;
 }
 
 .background-block-container.hidden {
