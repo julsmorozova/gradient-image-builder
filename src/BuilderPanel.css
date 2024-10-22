@@ -6,6 +6,7 @@
   border-right: 0;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   position: sticky;
   top: 0;
   box-shadow: 0 2px 2px #eee;
@@ -86,9 +87,14 @@
   justify-content: center;
 }
 
+#toggle-group-visibility,
+#toggle-layer-configs-visibility {
+  padding: 0.125rem 0.3125rem;
+  margin-inline-end: 0.5rem;
+}
+
 #toggle-group-visibility {
   padding: 0.125rem 0.3125rem 0.375rem;
-  margin-inline-end: 0.5rem;
 }
 
 @keyframes slide {

@@ -70,6 +70,7 @@ export default function IconMenu({
           key={uniqueId + "-" + index + "-menu-item"}
           className="menu-item-wrapper"
         >
+          {isSelected && <span className="check-icon" />}
           <li
             className="icon-menu-item"
             onClick={(e) => {
@@ -78,17 +79,28 @@ export default function IconMenu({
               onMenuBtnClick();
             }}
           >
-            {isSelected && <span className="check-icon" />}
             {i.name}
           </li>
-          <span id="btn-clear" onClick={handleDeleteClick}>
-            x
-          </span>
-          <span
-            id="btn-delete"
-            className="clear-icon"
-            onClick={handleClearClick}
-          />
+          <div className="button-wrapper">
+            <button
+              className="btn btn-secondary btn-icon-menu delete-group"
+              onClick={handleDeleteClick}
+              data-tooltip-id="delete-group"
+              data-tooltip-content="This will delete the group and the items within"
+            >
+              <span id="btn-delete">x</span>
+            </button>
+            <Tooltip id="delete-group" />
+            <button
+              className="btn btn-secondary btn-icon-menu clear-group"
+              onClick={handleClearClick}
+              data-tooltip-id="clear-group"
+              data-tooltip-content="This will clear the group without deleting the items"
+            >
+              <span id="btn-clear" className="clear-icon" />
+            </button>
+            <Tooltip id="clear-group" />
+          </div>
         </div>
       );
     });

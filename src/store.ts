@@ -26,7 +26,7 @@ export type BackgroundInput = {
 export type BackgroundGroupType = {
   id: string;
   name?: string;
-  isOpen?: boolean;
+  isAccordionOpen?: boolean;
 };
 
 export type LayerRegistry = Record<string, BackgroundInput>;
@@ -165,7 +165,7 @@ export function handleMoveToGroup(
   const updatedGroupRegistry = Object.fromEntries(
     Object.entries(groupRegistry).map(([k, v]) => {
       if (k === groupId) {
-        return [k, { ...v, isOpen: true }];
+        return [k, { ...v, isAccordionOpen: true }];
       } else {
         return [k, v];
       }
@@ -291,10 +291,10 @@ export function handleDragByDirection(
   if (direction === "before" || direction === "after") {
     return [
       layout.flatMap((item) => {
-        if (
-          item === sourceItem &&
-          !(isGroup(sourceItem) && !(targetId in groupRegistry))
-        ) {
+        if (isGroup(sourceItem) && targetId in groupRegistry) {
+          return item;
+        }
+        if (item === sourceItem) {
           return [];
         }
         if (item === targetId) {
@@ -409,7 +409,7 @@ export type GradientObjectAction = {
       | BackgroundInput["isAccordionOpen"]
   ) => void;
   editCheckboxValue: () => void;
-  toggleAccordion: (id: BackgroundInput["id"]) => void;
+  toggleAccordion: (id: BackgroundInput["id"], isOpen?: boolean) => void;
   toggleLayerVisibility: (id: BackgroundInput["id"]) => void;
   moveToGroup: (
     layerId: BackgroundInput["id"],
@@ -417,7 +417,10 @@ export type GradientObjectAction = {
   ) => void;
   addGroup: (layerId: string, name: string) => void;
   editGroupName: (id: BackgroundGroupType["id"], name: string) => void;
-  toggleGroupAccordion: (id: BackgroundGroupType["id"]) => void;
+  toggleGroupAccordion: (
+    id: BackgroundGroupType["id"],
+    isOpen?: boolean
+  ) => void;
   deleteGroup: (groupId: BackgroundGroupType["id"]) => void;
   clearGroup: (groupId: BackgroundGroupType["id"]) => void;
   handleDrag: (targetId: string, sourceId: string, direction: string) => void;
@@ -529,13 +532,20 @@ export const useGradientStore = create<
         }),
       editCheckboxValue: () =>
         set({ ...get(), isBorderShown: !get().isBorderShown }),
-      toggleAccordion: (id) =>
+      toggleAccordion: (id, isOpen) =>
         set({
           ...get(),
           layerRegistry: Object.fromEntries(
             Object.entries(get().layerRegistry).map(([k, v]) => {
               if (k === id) {
-                return [k, { ...v, isAccordionOpen: !v.isAccordionOpen }];
+                return [
+                  k,
+                  {
+                    ...v,
+                    isAccordionOpen:
+                      isOpen !== undefined ? isOpen : !v.isAccordionOpen,
+                  },
+                ];
               } else {
                 return [k, v];
               }
@@ -587,7 +597,7 @@ export const useGradientStore = create<
             [newDate]: {
               id: newDate,
               name: name ?? `group-${get().groupCounter + 1}`,
-              isOpen: false,
+              isAccordionOpen: false,
             },
             ...get().groupRegistry,
           },
@@ -606,13 +616,20 @@ export const useGradientStore = create<
             })
           ),
         }),
-      toggleGroupAccordion: (id) =>
+      toggleGroupAccordion: (id, isOpen) =>
         set({
           ...get(),
           groupRegistry: Object.fromEntries(
             Object.entries(get().groupRegistry).map(([k, v]) => {
               if (k === id) {
-                return [k, { ...v, isOpen: !v.isOpen }];
+                return [
+                  k,
+                  {
+                    ...v,
+                    isAccordionOpen:
+                      isOpen !== undefined ? isOpen : !v.isAccordionOpen,
+                  },
+                ];
               } else {
                 return [k, v];
               }

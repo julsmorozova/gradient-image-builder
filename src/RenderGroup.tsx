@@ -63,7 +63,7 @@ export default function RenderGroup({
           items={items}
           id={group.id}
           name={group.name}
-          isGroupOpen={group.isOpen}
+          isGroupOpen={group.isAccordionOpen}
           onAccordionToggle={() => toggleGroupAccordion(group.id)}
           draggable
         >

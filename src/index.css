@@ -332,17 +332,112 @@ button.btn:disabled:focus {
       47% 100%/ 100% 77% no-repeat;
 }
 
+.group-items-icon {
+  display: block;
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  --icon-color: #222;
+  background: linear-gradient(
+        transparent 0 28%,
+        var(--accent-color) 28% 43%,
+        transparent 43% 53%,
+        var(--accent-color) 53% 68%,
+        transparent 68%
+      )
+      70% 115%/ 50% 70% no-repeat,
+    linear-gradient(
+        var(--icon-color) 18%,
+        white 18.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      49% 100%/ 80% 60% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 20%,
+        white 20.5% 79.5%,
+        var(--icon-color) 80%
+      )
+      47% 100%/ 100% 60% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 20%,
+        white 20.5% 79.5%,
+        var(--icon-color) 80%
+      )
+      0% 57%/ 45% 57% no-repeat,
+    linear-gradient(
+        var(--icon-color) 18%,
+        white 18.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      0% 63.25%/ 45% 75% no-repeat,
+    linear-gradient(
+        var(--icon-color) 14%,
+        white 14.5% 81.5%,
+        var(--icon-color) 82%
+      )
+      47% 100%/ 80% 77% no-repeat,
+    linear-gradient(
+        90deg,
+        var(--icon-color) 11%,
+        white 12% 79.5%,
+        var(--icon-color) 80%
+      )
+      47% 100%/ 100% 77% no-repeat;
+}
+
+.config-icon {
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%)
+      5% 97%/ 27% 27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 63% 64%/ 27%
+      27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 75% 0%/ 27%
+      27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 25% 32%/ 27%
+      27% no-repeat,
+    linear-gradient(transparent 0 25%, #222 25.5% 75%, transparent 75.5%) 0% 1%/
+      100% 24% repeat-y;
+}
+
+.hide-config-icon {
+  margin: auto 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: linear-gradient(
+        135deg,
+        transparent 0 45%,
+        var(--accent-color) 45% 53%,
+        transparent 53%
+      )
+      0% 0%/ 100% 100% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 5% 97%/ 27%
+      27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 63% 64%/ 27%
+      27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 75% 0%/ 27%
+      27% no-repeat,
+    radial-gradient(100% 100% at 50% 50%, #222 49.5%, transparent 50%) 25% 32%/ 27%
+      27% no-repeat,
+    linear-gradient(transparent 0 25%, #222 25.5% 75%, transparent 75.5%) 0% 1%/
+      100% 24% repeat-y;
+}
+
 .no-groups-icon {
   margin: auto 0;
   width: 1.25rem;
   height: 1.25rem;
   background: linear-gradient(
-        140deg,
-        transparent 60%,
-        #4e97fe 60.25% 70.5%,
-        transparent 70.75%
+        transparent 0 28%,
+        var(--accent-color) 28% 43%,
+        transparent 43% 53%,
+        var(--accent-color) 53% 68%,
+        transparent 68%
       )
-      0% 100%/ 100% 110% no-repeat,
+      70% 115%/ 50% 70% no-repeat,
     linear-gradient(#222 18%, white 18.5% 81.5%, #222 82%) 51% 100%/ 80% 60% no-repeat,
     linear-gradient(90deg, #222 20%, white 20.5% 79.5%, #222 80%) 47% 100%/ 100%
       60% no-repeat,

@@ -1,6 +1,7 @@
 import { forwardRef, useState } from "react";
 import { GradientObjectAction } from "./store";
 import "./Modal.css";
+import { truncateLongInput } from "./tools";
 
 type ModalProps = {
   title: string;
@@ -15,7 +16,7 @@ export const Modal = forwardRef(
   ) => {
     const [input, setInput] = useState("");
     const handleConfirm = () => {
-      onSave(layerId, input);
+      onSave(layerId, truncateLongInput(input));
       onCancel();
     };
     return (

@@ -22,14 +22,19 @@
 }
 .menu-item-wrapper {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .icon-menu-dropdown.collapsed {
   display: none;
 }
 .icon-menu-dropdown li {
   display: flex;
+  flex: 1;
   align-items: center;
-  padding: 0.3125rem 1rem 0.3125rem 1.25rem;
+  position: relative;
+  padding: 0.3125rem 1rem 0.3125rem 1.5rem;
+  white-space: nowrap;
 }
 
 .icon-menu-dropdown li:hover {
@@ -40,22 +45,39 @@
   margin-inline-end: 0.5rem;
 }
 
-li .check-icon {
+.menu-item-wrapper .check-icon {
   position: absolute;
   left: 0.25rem;
+  z-index: 1000;
 }
 
-li .check-icon::before {
+.check-icon::before {
   --btn-primary-bg-color: var(--accent-color);
 }
 
-#btn-clear {
-  position: absolute;
-  right: 30px;
-  font-size: 1rem;
+.button-wrapper {
+  align-items: center;
 }
 
-#btn-delete {
-  position: absolute;
-  right: 5px;
+button.btn-secondary.btn-icon-menu {
+  background-color: transparent;
+  margin-right: 0.25rem;
+}
+
+button.btn-secondary.btn-icon-menu:hover,
+button.btn-secondary.btn-icon-menu:focus {
+  border-color: transparent;
+  background-color: var(--btn-secondary-bg-color);
+  filter: none;
+}
+
+button.btn-secondary.btn-icon-menu.delete-group {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  display: flex;
+}
+
+button.btn-secondary.btn-icon-menu.clear-group {
+  display: flex;
+  padding: 0.25rem 0.625rem 0.25rem 0.5rem;
 }

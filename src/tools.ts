@@ -6,6 +6,15 @@ export enum GradientType {
   LINEAR = "linear",
 }
 
+export function truncateLongInput(
+  input: string,
+  maxLength: number = 20
+): string {
+  return input.length > maxLength
+    ? input.substring(0, maxLength - 1) + "..."
+    : input;
+}
+
 export const styleObjectToString = (styleObject: CSSProperties) => {
   return (
     Object.entries(styleObject)

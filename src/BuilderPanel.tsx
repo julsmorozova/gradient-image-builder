@@ -1,4 +1,4 @@
-import { useGradientStore } from "./store";
+import { GroupRegistry, LayerRegistry, useGradientStore } from "./store";
 import NumberInput from "./NumberInput";
 import { useId, useState } from "react";
 import "./BuilderPanel.css";
@@ -9,30 +9,90 @@ import LayersPanel from "./LayersPanel";
 
 export default function BuilderPanel() {
   const isBorderShown = useGradientStore((state) => state.isBorderShown);
+  const groups = useGradientStore((state) => state.groupRegistry);
+  const layers = useGradientStore((state) => state.layerRegistry);
 
-  const [showGroupItems, setShowGroupItems] = useState(false);
+  const [showGroupItems, setShowGroupItems] = useState(
+    allItemsOpen(groups) ? true : false
+  );
+  const [showLayersConfigs, setShowLayersConfigs] = useState(
+    allItemsOpen(layers) ? true : false
+  );
   const editCheckboxValue = useGradientStore(
     (state) => state.editCheckboxValue
   );
 
+  function allItemsOpen(items: GroupRegistry | LayerRegistry): boolean {
+    return Object.values(items).every((g) => g.isAccordionOpen === true);
+  }
+
+  const toggleGroupAccordion = useGradientStore(
+    (state) => state.toggleGroupAccordion
+  );
+
+  const toggleLayerAccordion = useGradientStore(
+    (state) => state.toggleAccordion
+  );
+
+  function handleCollapseGroupsToggle(groups: GroupRegistry) {
+    if (allItemsOpen(groups) && !showGroupItems) {
+      return;
+    }
+    setShowGroupItems(!showGroupItems);
+    Object.keys(groups).map((i) => {
+      toggleGroupAccordion(i, showGroupItems ? false : true);
+    });
+  }
+
+  function handleCollapseLayersToggle(layers: LayerRegistry) {
+    if (allItemsOpen(layers) && !showLayersConfigs) {
+      return;
+    }
+    setShowLayersConfigs(!showLayersConfigs);
+    Object.keys(layers).map((i) => {
+      toggleLayerAccordion(i, showLayersConfigs ? false : true);
+    });
+  }
+
   const id = useId();
+
+  console.log(showLayersConfigs);
 
   return (
     <div className="panel-container builder-panel">
       <div className="control-panel">
         <button
-          id="toggle-group-visibility"
+          id="toggle-layer-configs-visibility"
           className="builder-panel btn btn-secondary"
-          onClick={() => setShowGroupItems(!showGroupItems)}
-          data-tooltip-id="group-items-visibility"
+          onClick={() => handleCollapseLayersToggle(layers)}
+          data-tooltip-id="layers-configs-visibility"
           data-tooltip-content={
-            showGroupItems ? "Collapse groups" : "Open groups"
+            showLayersConfigs
+              ? "Hide all layers' configs"
+              : "Show all layers' configs"
           }
         >
           <div
             className={classNames({
-              "folder-icon": !showGroupItems,
-              "no-groups-icon": showGroupItems,
+              "hide-config-icon": showLayersConfigs,
+              "config-icon": !showLayersConfigs,
+            })}
+          />
+        </button>
+        <Tooltip id="layers-configs-visibility" />
+        <button
+          id="toggle-group-visibility"
+          className="builder-panel btn btn-secondary"
+          onClick={() => handleCollapseGroupsToggle(groups)}
+          data-tooltip-id="group-items-visibility"
+          data-tooltip-content={
+            showGroupItems ? "Hide all group items" : "Show all group items"
+          }
+        >
+          <div
+            className={classNames({
+              "folder-icon": showGroupItems,
+              "group-items-icon": !showGroupItems,
             })}
           />
         </button>
