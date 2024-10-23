@@ -1,6 +1,6 @@
 .modal-overlay {
   width: 100%;
-  position: absolute;
+  position: fixed;
   height: 100%;
   display: flex;
   align-items: center;

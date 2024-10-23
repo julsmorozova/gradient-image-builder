@@ -9,6 +9,9 @@ import LayersPanel from "./LayersPanel";
 
 export default function BuilderPanel() {
   const isBorderShown = useGradientStore((state) => state.isBorderShown);
+  const width = useGradientStore((state) => state.width);
+  const height = useGradientStore((state) => state.height);
+  const borderWidth = useGradientStore((state) => state.borderWidth);
   const groups = useGradientStore((state) => state.groupRegistry);
   const layers = useGradientStore((state) => state.layerRegistry);
 
@@ -21,6 +24,8 @@ export default function BuilderPanel() {
   const editCheckboxValue = useGradientStore(
     (state) => state.editCheckboxValue
   );
+
+  const editValue = useGradientStore((state) => state.editGradientObjectValue);
 
   function allItemsOpen(items: GroupRegistry | LayerRegistry): boolean {
     return Object.values(items).every((g) => g.isAccordionOpen === true);
@@ -111,7 +116,13 @@ export default function BuilderPanel() {
           {editDisplayStylePropName("width")}:{" "}
         </div>
         <div className="number-input-input-wrapper">
-          <NumberInput inputName="width" unit="rem" maxValue={50} />
+          <NumberInput
+            inputName="width"
+            unit="rem"
+            maxValue={50}
+            inputValue={width}
+            editValue={editValue}
+          />
         </div>
       </div>
       <div className="biulder-panel-row number-input-container">
@@ -119,7 +130,13 @@ export default function BuilderPanel() {
           {editDisplayStylePropName("height")}:{" "}
         </div>
         <div className="number-input-input-wrapper">
-          <NumberInput inputName="height" unit="rem" maxValue={34} />
+          <NumberInput
+            inputName="height"
+            unit="rem"
+            maxValue={34}
+            inputValue={height}
+            editValue={editValue}
+          />
         </div>
       </div>
       <div className="biulder-panel-row number-input-container border-row">
@@ -139,7 +156,13 @@ export default function BuilderPanel() {
           {editDisplayStylePropName("width")}:{" "}
         </div>
         <div className="number-input-input-wrapper">
-          <NumberInput inputName="borderWidth" unit="px" maxValue={10} />
+          <NumberInput
+            inputName="borderWidth"
+            unit="px"
+            maxValue={10}
+            inputValue={borderWidth}
+            editValue={editValue}
+          />
         </div>
       </div>
       <LayersPanel />

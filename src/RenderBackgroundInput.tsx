@@ -4,6 +4,7 @@ import {
   BackgroundGroupType,
   BackgroundInput,
   GradientObjectAction,
+  LayerRegistry,
 } from "./store";
 import {
   dragStart,
@@ -21,6 +22,15 @@ type RenderBackgroundInputPropsType = {
   editBackgroundValue: GradientObjectAction["editBackgroundValue"];
   handleDrag: GradientObjectAction["handleDrag"];
   draggedElement: MutableRefObject<string | null>;
+  deleteLayer: GradientObjectAction["deleteLayer"];
+  cloneLayer: GradientObjectAction["cloneLayer"];
+  moveToGroup: GradientObjectAction["moveToGroup"];
+  addGroup: GradientObjectAction["addGroup"];
+  clearGroup: GradientObjectAction["clearGroup"];
+  deleteGroup: GradientObjectAction["deleteGroup"];
+  toggleAccordion: GradientObjectAction["toggleGroupAccordion"];
+  toggleVisibility: GradientObjectAction["toggleLayerVisibility"];
+  layerRegistry: LayerRegistry;
 };
 
 export default function RenderBackgroundInput({
@@ -31,6 +41,15 @@ export default function RenderBackgroundInput({
   editBackgroundValue,
   handleDrag,
   draggedElement,
+  deleteLayer,
+  cloneLayer,
+  toggleVisibility,
+  toggleAccordion,
+  addGroup,
+  moveToGroup,
+  clearGroup,
+  deleteGroup,
+  layerRegistry,
 }: RenderBackgroundInputPropsType) {
   return (
     <div
@@ -66,6 +85,15 @@ export default function RenderBackgroundInput({
         layerGroups={groups}
         layoutListLength={layoutListLength}
         editBackgroundValue={editBackgroundValue}
+        deleteLayer={deleteLayer}
+        cloneLayer={cloneLayer}
+        toggleAccordion={toggleAccordion}
+        toggleVisibility={toggleVisibility}
+        addGroup={addGroup}
+        moveToGroup={moveToGroup}
+        clearGroup={clearGroup}
+        deleteGroup={deleteGroup}
+        layerRegistry={layerRegistry}
       />
     </div>
   );

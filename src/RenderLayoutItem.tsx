@@ -17,6 +17,14 @@ type RenderLayoutItemProps = {
   toggleGroupAccordion: GradientObjectAction["toggleGroupAccordion"];
   layerRegistry: GradientObjectState["layerRegistry"];
   draggedElement: MutableRefObject<string | null>;
+  deleteLayer: GradientObjectAction["deleteLayer"];
+  cloneLayer: GradientObjectAction["cloneLayer"];
+  moveToGroup: GradientObjectAction["moveToGroup"];
+  addGroup: GradientObjectAction["addGroup"];
+  clearGroup: GradientObjectAction["clearGroup"];
+  deleteGroup: GradientObjectAction["deleteGroup"];
+  toggleAccordion: GradientObjectAction["toggleGroupAccordion"];
+  toggleVisibility: GradientObjectAction["toggleLayerVisibility"];
 };
 
 export const RenderLayoutItem = ({
@@ -28,6 +36,14 @@ export const RenderLayoutItem = ({
   editBackgroundValue,
   handleDrag,
   toggleGroupAccordion,
+  deleteLayer,
+  cloneLayer,
+  toggleVisibility,
+  toggleAccordion,
+  addGroup,
+  moveToGroup,
+  clearGroup,
+  deleteGroup,
 }: RenderLayoutItemProps) => {
   return isString(item) ? (
     <RenderBackgroundInput
@@ -37,6 +53,15 @@ export const RenderLayoutItem = ({
       editBackgroundValue={editBackgroundValue}
       handleDrag={handleDrag}
       draggedElement={draggedElement}
+      deleteLayer={deleteLayer}
+      cloneLayer={cloneLayer}
+      toggleAccordion={toggleAccordion}
+      toggleVisibility={toggleVisibility}
+      addGroup={addGroup}
+      moveToGroup={moveToGroup}
+      clearGroup={clearGroup}
+      deleteGroup={deleteGroup}
+      layerRegistry={layerRegistry}
     />
   ) : (
     <RenderGroup
@@ -49,6 +74,14 @@ export const RenderLayoutItem = ({
       handleDrag={handleDrag}
       layerRegistry={layerRegistry}
       draggedElement={draggedElement}
+      deleteLayer={deleteLayer}
+      cloneLayer={cloneLayer}
+      toggleAccordion={toggleAccordion}
+      toggleVisibility={toggleVisibility}
+      addGroup={addGroup}
+      moveToGroup={moveToGroup}
+      clearGroup={clearGroup}
+      deleteGroup={deleteGroup}
     />
   );
 };

@@ -7,7 +7,7 @@ import {
   Layout,
   useGradientStore,
 } from "./store";
-import { RenderLayoutItem } from "./RanderLayoutItem";
+import { RenderLayoutItem } from "./RenderLayoutItem";
 
 export default function LayersPanel() {
   const groupRegistry: GroupRegistry = useGradientStore(
@@ -24,10 +24,19 @@ export default function LayersPanel() {
   const addBackgroundLayer = useGradientStore(
     (state) => state.addBackgroundLayer
   );
-
   const editBackgroundValue = useGradientStore(
     (state) => state.editBackgroundValue
   );
+  const deleteLayer = useGradientStore((state) => state.deleteLayer);
+  const cloneLayer = useGradientStore((state) => state.cloneLayer);
+  const toggleVisibility = useGradientStore(
+    (state) => state.toggleLayerVisibility
+  );
+  const moveToGroup = useGradientStore((state) => state.moveToGroup);
+  const addGroup = useGradientStore((state) => state.addGroup);
+  const clearGroup = useGradientStore((state) => state.clearGroup);
+  const deleteGroup = useGradientStore((state) => state.deleteGroup);
+  const toggleAccordion = useGradientStore((state) => state.toggleAccordion);
 
   const handleDrag = useGradientStore((state) => state.handleDrag);
 
@@ -46,6 +55,14 @@ export default function LayersPanel() {
           handleDrag={handleDrag}
           toggleGroupAccordion={toggleGroupAccordion}
           draggedElement={draggedElement}
+          deleteLayer={deleteLayer}
+          cloneLayer={cloneLayer}
+          toggleAccordion={toggleAccordion}
+          toggleVisibility={toggleVisibility}
+          addGroup={addGroup}
+          moveToGroup={moveToGroup}
+          clearGroup={clearGroup}
+          deleteGroup={deleteGroup}
         />
       ))}
       <div className="button-wrapper">

@@ -127,6 +127,15 @@ function isLayerPresentInOtherGroups(
   return { present: false, groupId: "" };
 }
 
+function isGroupItem(layerId: string, layout: Layout): boolean {
+  for (const i of layout) {
+    if (!isString(i) && i.children.includes(layerId)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function handleMoveToGroup(
   layerId: string,
   groupId: string,
@@ -198,12 +207,12 @@ function isClonePresent(layerName: string, layerRegistry: LayerRegistry) {
 }
 
 function getCloneNumber(layerName: string): number {
-  return +layerName?.substring(layerName?.indexOf("-") + 1);
+  return +layerName?.substring(layerName?.lastIndexOf("-") + 1);
 }
 
 function sortClonesByNumber(layerRegistry: LayerRegistry) {
   return [...Object.values(layerRegistry)]
-    .filter((i) => i.name !== undefined)
+    .filter((i) => i.name.includes("_clone-"))
     .sort((a, b) => getCloneNumber(b.name) - getCloneNumber(a.name));
 }
 
@@ -211,7 +220,7 @@ function findLastCloneLayerName(layerRegistry: LayerRegistry, layerId: string) {
   const layerName = layerRegistry[layerId].name;
   const searchId =
     layerName && layerName.includes("_clone-")
-      ? layerName.substring(0, layerName.indexOf("-") + 1)
+      ? layerName.substring(0, layerName.lastIndexOf("-") + 1)
       : layerName + "_clone-";
   return sortClonesByNumber(layerRegistry).find((i) =>
     i.name.includes(searchId)
@@ -233,7 +242,7 @@ export function cloneLayer(
     const lastCloneName = findLastCloneLayerName(layerRegistry, layerId);
     const newCloneNum =
       lastCloneName &&
-      +lastCloneName?.substring(lastCloneName?.indexOf("-") + 1) + 1;
+      +lastCloneName?.substring(lastCloneName?.lastIndexOf("-") + 1) + 1;
     newName =
       (lastCloneName &&
         lastCloneName.substring(0, lastCloneName.lastIndexOf("-") + 1) +
@@ -294,14 +303,16 @@ export function handleDragByDirection(
   if (direction === "before" || direction === "after") {
     return [
       layout.flatMap((item) => {
-        if (isGroup(sourceItem) && targetId in groupRegistry) {
+        if (isGroup(sourceItem) && isGroupItem(targetId, layout)) {
           return item;
         }
         if (item === sourceItem) {
           return [];
         }
         if (item === targetId) {
-          return direction === "before" ? [sourceItem, item] : [item, sourceId];
+          return direction === "before"
+            ? [sourceItem, item]
+            : [item, sourceItem];
         }
         // if we're inserting before or after a group
         if (isGroup(item) && item.id === targetId) {

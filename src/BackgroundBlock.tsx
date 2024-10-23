@@ -3,7 +3,7 @@ import "./BackgroundBlock.css";
 import {
   BackgroundGroupType,
   GradientObjectAction,
-  useGradientStore,
+  LayerRegistry,
 } from "./store";
 import BackgroundBlockDropdown from "./BackgroundBlockDropdown";
 import Accordion from "./Accordion";
@@ -22,6 +22,15 @@ type BackgroundBlockProps = {
   layerGroups: BackgroundGroupType[];
   layoutListLength: number;
   editBackgroundValue: GradientObjectAction["editBackgroundValue"];
+  deleteLayer: GradientObjectAction["deleteLayer"];
+  cloneLayer: GradientObjectAction["cloneLayer"];
+  moveToGroup: GradientObjectAction["moveToGroup"];
+  addGroup: GradientObjectAction["addGroup"];
+  clearGroup: GradientObjectAction["clearGroup"];
+  deleteGroup: GradientObjectAction["deleteGroup"];
+  toggleAccordion: GradientObjectAction["toggleGroupAccordion"];
+  toggleVisibility: GradientObjectAction["toggleLayerVisibility"];
+  layerRegistry: LayerRegistry;
 };
 
 const repeatOptions = [
@@ -68,20 +77,16 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
     layerGroups,
     layoutListLength,
     editBackgroundValue,
+    deleteLayer,
+    cloneLayer,
+    toggleVisibility,
+    toggleAccordion,
+    addGroup,
+    moveToGroup,
+    clearGroup,
+    deleteGroup,
+    layerRegistry,
   } = props;
-
-  const deleteBackgroundLayer = useGradientStore((state) => state.deleteLayer);
-  const cloneLayer = useGradientStore((state) => state.cloneLayer);
-  const toggleVisibility = useGradientStore(
-    (state) => state.toggleLayerVisibility
-  );
-  const moveToGroup = useGradientStore((state) => state.moveToGroup);
-  const addGroup = useGradientStore((state) => state.addGroup);
-  const clearGroup = useGradientStore((state) => state.clearGroup);
-  const deleteGroup = useGradientStore((state) => state.deleteGroup);
-  const toggleAccordion = useGradientStore((state) => state.toggleAccordion);
-
-  const layerRegistry = useGradientStore((state) => state.layerRegistry);
 
   return (
     <div
@@ -106,7 +111,7 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                   isStringInput
                   backgroundId={id}
                   backgroundPropName="name"
-                  backgroundValue={layerRegistry[id]["name"]}
+                  backgroundValue={layerRegistry[id]["name"] ?? "error"}
                   isValueRelative
                   editBackgroundValue={editBackgroundValue}
                 />
@@ -114,7 +119,7 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
                   <button
                     disabled={layoutListLength === 1}
                     className="btn btn-secondary delete-bg-layer-btn"
-                    onClick={() => deleteBackgroundLayer(id)}
+                    onClick={() => deleteLayer(id)}
                     data-tooltip-id="delete-layer"
                     data-tooltip-content="Remove layer"
                   >
