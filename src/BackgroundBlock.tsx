@@ -103,7 +103,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
               </div>
               <div className="bg-block-input-wrapper gradient-identifier">
                 <GradientInput
-                  // key={`${id}-gradient-name`}
                   isStringInput
                   backgroundId={id}
                   backgroundPropName="name"
@@ -155,7 +154,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
               </div>
               <div className="bg-block-input-wrapper">
                 <GradientInput
-                  // key={`${id}-value`}
                   isStringInput
                   isTextarea
                   backgroundId={id}
@@ -200,7 +198,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
           <div className="bg-position-container row row-secondary">
             <div className="code-input-label label">{"position: "}</div>
             <GradientInput
-              // key={`${id}-x`}
               backgroundId={id}
               backgroundPropName="x"
               backgroundValue={layerRegistry[id]["x"]}
@@ -209,7 +206,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
               editBackgroundValue={editBackgroundValue}
             />
             <GradientInput
-              // key={`${id}-y`}
               backgroundId={id}
               backgroundPropName="y"
               backgroundValue={layerRegistry[id]["y"]}
@@ -221,7 +217,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
           <div className="bg-size-container row row-secondary">
             <div className="code-input-label label">{"size: "}</div>
             <GradientInput
-              // key={`${id}-w`}
               backgroundId={id}
               backgroundPropName="w"
               backgroundValue={layerRegistry[id]["w"]}
@@ -229,7 +224,6 @@ export default function BackgroundBlock(props: BackgroundBlockProps) {
               editBackgroundValue={editBackgroundValue}
             />
             <GradientInput
-              // key={`${id}-h`}
               backgroundId={id}
               backgroundPropName="h"
               backgroundValue={layerRegistry[id]["h"]}

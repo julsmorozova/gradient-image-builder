@@ -56,8 +56,6 @@ export default function BuilderPanel() {
 
   const id = useId();
 
-  console.log(showLayersConfigs);
-
   return (
     <div className="panel-container builder-panel">
       <div className="control-panel">

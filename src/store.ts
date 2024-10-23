@@ -12,7 +12,7 @@ export type BackgroundInputNumber = undefined | number;
 export type BackgroundInput = {
   id: string;
   isAccordionOpen: boolean;
-  name?: string;
+  name: string;
   isDefaultData: boolean;
   isHidden: boolean;
   value?: string | React.ChangeEvent<Element>;
@@ -113,35 +113,6 @@ export function deleteLayer(
 export function isString(x: unknown): x is string {
   return typeof x === "string";
 }
-function isClonePresent(layerId: string, layerRegistry: LayerRegistry) {
-  for (const i of Object.keys(layerRegistry)) {
-    if (isString(i) && i.includes(layerId + "_clone-")) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function getCloneNumber(layerId: string): number {
-  return +layerId?.substring(layerId?.indexOf("-") + 1);
-}
-
-function sortClonesByNumber(layerRegistry: LayerRegistry) {
-  return [...Object.keys(layerRegistry)]
-    .filter((i) => isString(i))
-    .sort((a, b) => getCloneNumber(b) - getCloneNumber(a));
-}
-
-function findLastCloneLayer(layerRegistry: LayerRegistry, layerId: string) {
-  const searchId = layerId.includes("_clone-")
-    ? layerId.substring(0, layerId.indexOf("-") + 1)
-    : layerId + "_clone-";
-  return (
-    (sortClonesByNumber(layerRegistry).find(
-      (i) => isString(i) && i.includes(searchId)
-    ) as string) ?? layerId
-  );
-}
 
 function isLayerPresentInOtherGroups(
   layerId: string,
@@ -217,30 +188,62 @@ export function handleMoveToGroup(
   ];
 }
 
+function isClonePresent(layerName: string, layerRegistry: LayerRegistry) {
+  for (const i of Object.values(layerRegistry)) {
+    if (i.name.includes(layerName + "_clone-")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getCloneNumber(layerName: string): number {
+  return +layerName?.substring(layerName?.indexOf("-") + 1);
+}
+
+function sortClonesByNumber(layerRegistry: LayerRegistry) {
+  return [...Object.values(layerRegistry)]
+    .filter((i) => i.name !== undefined)
+    .sort((a, b) => getCloneNumber(b.name) - getCloneNumber(a.name));
+}
+
+function findLastCloneLayerName(layerRegistry: LayerRegistry, layerId: string) {
+  const layerName = layerRegistry[layerId].name;
+  const searchId =
+    layerName && layerName.includes("_clone-")
+      ? layerName.substring(0, layerName.indexOf("-") + 1)
+      : layerName + "_clone-";
+  return sortClonesByNumber(layerRegistry).find((i) =>
+    i.name.includes(searchId)
+  )?.name;
+}
+
 export function cloneLayer(
   layerId: string,
   layout: Layout,
   layerRegistry: LayerRegistry,
   groupRegistry: GroupRegistry
 ): [Layout, LayerRegistry, GroupRegistry] {
-  let newId = "";
   let newName = "";
-  const lastCloneLayer = findLastCloneLayer(layerRegistry, layerId);
-  const newCloneNum =
-    +lastCloneLayer?.substring(lastCloneLayer?.indexOf("-") + 1) + 1;
-  if (isClonePresent(layerId, layerRegistry) || layerId.includes("_clone-")) {
-    newId =
-      lastCloneLayer.substring(0, lastCloneLayer.indexOf("-") + 1) +
-      newCloneNum;
+  const layerName = layerRegistry[layerId].name;
+  if (
+    isClonePresent(layerName, layerRegistry) ||
+    layerName.includes("_clone-")
+  ) {
+    const lastCloneName = findLastCloneLayerName(layerRegistry, layerId);
+    const newCloneNum =
+      lastCloneName &&
+      +lastCloneName?.substring(lastCloneName?.indexOf("-") + 1) + 1;
     newName =
-      (layerRegistry[lastCloneLayer].name?.substring(
-        0,
-        layerRegistry[lastCloneLayer].name?.lastIndexOf("-") + 1
-      ) ?? "new clone") + newCloneNum;
+      (lastCloneName &&
+        lastCloneName.substring(0, lastCloneName.lastIndexOf("-") + 1) +
+          newCloneNum) ??
+      "new clone";
   } else {
-    newId = layerId + "_clone-" + 0;
     newName = layerRegistry[layerId].name + "_clone-" + 0;
   }
+  const newDate = new Date().valueOf().toString();
+  const newId = newDate;
   const newLayerRegistry = {
     ...layerRegistry,
     [newId]: {
