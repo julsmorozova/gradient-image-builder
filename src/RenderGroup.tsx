@@ -53,59 +53,60 @@ export default function RenderGroup({
   deleteGroup,
 }: RenderGroupPropType) {
   return (
-    group?.id &&
-    items.length > 0 && (
-      <div
-        className="dnd-element group"
-        key={group.id}
-        id={group.id}
-        draggable
-        onDragStart={() => dragStart(group.id, draggedElement)}
-        onDragEnter={(e) => handleDragEnter(e)}
-        onDragLeave={(e) => handleDragLeave(e)}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          e.preventDefault();
-          removeDirectionClasses(e);
-          draggedElement.current &&
-            handleDrag(
-              group.id,
-              draggedElement.current,
-              getDragDirection(e) ?? "before"
-            );
-        }}
-      >
-        <BackgroundGroup
-          items={items}
+    <>
+      {group?.id && items.length > 0 && (
+        <div
+          className="dnd-element group"
+          key={group.id}
           id={group.id}
-          name={group.name}
-          isGroupOpen={group.isAccordionOpen}
-          onAccordionToggle={() => toggleGroupAccordion(group.id)}
           draggable
+          onDragStart={() => dragStart(group.id, draggedElement)}
+          onDragEnter={(e) => handleDragEnter(e)}
+          onDragLeave={(e) => handleDragLeave(e)}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            removeDirectionClasses(e);
+            draggedElement.current &&
+              handleDrag(
+                group.id,
+                draggedElement.current,
+                getDragDirection(e) ?? "before"
+              );
+          }}
         >
-          {items.map((i) => (
-            <RenderBackgroundInput
-              key={i}
-              item={layerRegistry[i]}
-              groupId={group.id}
-              layoutListLength={layoutListLength}
-              groups={groups}
-              editBackgroundValue={editBackgroundValue}
-              handleDrag={handleDrag}
-              draggedElement={draggedElement}
-              deleteLayer={deleteLayer}
-              cloneLayer={cloneLayer}
-              toggleAccordion={toggleAccordion}
-              toggleVisibility={toggleVisibility}
-              addGroup={addGroup}
-              moveToGroup={moveToGroup}
-              clearGroup={clearGroup}
-              deleteGroup={deleteGroup}
-              layerRegistry={layerRegistry}
-            />
-          ))}
-        </BackgroundGroup>
-      </div>
-    )
+          <BackgroundGroup
+            items={items}
+            id={group.id}
+            name={group.name}
+            isGroupOpen={group.isAccordionOpen}
+            onAccordionToggle={() => toggleGroupAccordion(group.id)}
+            draggable
+          >
+            {items.map((i) => (
+              <RenderBackgroundInput
+                key={i}
+                item={layerRegistry[i]}
+                groupId={group.id}
+                layoutListLength={layoutListLength}
+                groups={groups}
+                editBackgroundValue={editBackgroundValue}
+                handleDrag={handleDrag}
+                draggedElement={draggedElement}
+                deleteLayer={deleteLayer}
+                cloneLayer={cloneLayer}
+                toggleAccordion={toggleAccordion}
+                toggleVisibility={toggleVisibility}
+                addGroup={addGroup}
+                moveToGroup={moveToGroup}
+                clearGroup={clearGroup}
+                deleteGroup={deleteGroup}
+                layerRegistry={layerRegistry}
+              />
+            ))}
+          </BackgroundGroup>
+        </div>
+      )}
+    </>
   );
 }

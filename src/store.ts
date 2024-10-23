@@ -91,6 +91,8 @@ export function deleteLayer(
   groupRegistry: GroupRegistry
 ): [Layout, LayerRegistry, GroupRegistry] {
   const updatedLayerRegistry = Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     Object.entries(layerRegistry).filter(([k, v]) => k !== layerId)
   );
   return [
