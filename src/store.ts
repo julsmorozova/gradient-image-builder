@@ -389,6 +389,9 @@ export function handleDragByDirection(
                 ],
               };
         }
+        if (item === targetId && !isGroup(item) && !isGroup(sourceItem)) {
+          return [sourceItem, item];
+        }
         return item;
       }),
       layerRegistry,
