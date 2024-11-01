@@ -253,8 +253,7 @@ export function cloneLayer(
   } else {
     newName = layerRegistry[layerId].name + "_clone-" + 0;
   }
-  const newDate = new Date().valueOf().toString();
-  const newId = newDate;
+  const newId = crypto.randomUUID();
   const newLayerRegistry = {
     ...layerRegistry,
     [newId]: {
@@ -450,7 +449,7 @@ const gradientDefaultValue =
 const gradientDefaultValue1 =
   "radial-gradient(100% 100% at 50% 50%, #000 49.5%, transparent 50%)";
 
-const initialDate = new Date().valueOf().toString();
+const uuid = crypto.randomUUID();
 
 export const useGradientStore = create<
   GradientObjectState & GradientObjectAction
@@ -465,8 +464,8 @@ export const useGradientStore = create<
       layerCounter: 1,
       groupRegistry: {},
       layerRegistry: {
-        [initialDate]: {
-          id: initialDate,
+        [uuid]: {
+          id: uuid,
           isAccordionOpen: true,
           name: "layer-1",
           isDefaultData: true,
@@ -479,7 +478,7 @@ export const useGradientStore = create<
           repeat: "no-repeat",
         },
       },
-      layout: [initialDate],
+      layout: [uuid],
       cloneLayer: (layerId) => {
         const [layout, layerRegistry, groupRegistry] = cloneLayer(
           layerId,
@@ -498,14 +497,14 @@ export const useGradientStore = create<
       editGradientObjectValue: (incomingState) =>
         set({ ...get(), ...incomingState }),
       addBackgroundLayer: () => {
-        const newDate = new Date().valueOf().toString();
+        const newId = crypto.randomUUID();
         set({
           ...get(),
           layerCounter: get().layerCounter + 1,
-          layout: [newDate, ...get().layout],
+          layout: [newId, ...get().layout],
           layerRegistry: {
-            [newDate]: {
-              id: newDate,
+            [newId]: {
+              id: newId,
               isAccordionOpen: true,
               name: `layer-${get().layerCounter + 1}`,
               isDefaultData: true,
@@ -598,12 +597,12 @@ export const useGradientStore = create<
         });
       },
       addGroup: (layerId, name) => {
-        const newDate = new Date().valueOf().toString();
+        const newId = crypto.randomUUID();
         set({
           ...get(),
           groupCounter: get().layerCounter + 1,
           layout: get().layout.flatMap((i) => {
-            const newItem = { id: newDate, children: [] };
+            const newItem = { id: newId, children: [] };
             if (isString(i) && i === layerId) {
               return [newItem, i];
             } else if (!isString(i) && i.children.includes(layerId)) {
@@ -613,8 +612,8 @@ export const useGradientStore = create<
             }
           }),
           groupRegistry: {
-            [newDate]: {
-              id: newDate,
+            [newId]: {
+              id: newId,
               name: name ?? `group-${get().groupCounter + 1}`,
               isAccordionOpen: false,
             },

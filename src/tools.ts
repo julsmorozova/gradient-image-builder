@@ -103,7 +103,7 @@ export const handleClone = (
   const curIndex: number = items.findIndex((i: BackgroundInput) => i.id === id);
   const copiedItem: BackgroundInput = items[curIndex] && {
     ...items[curIndex],
-    id: new Date().valueOf().toString(),
+    id: crypto.randomUUID(),
     isDefaultData: false,
   };
 
